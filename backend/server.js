@@ -1,3 +1,5 @@
+const produitRoutes = require('./routes/produitRoutes'); 
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -19,6 +21,9 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
   res.send('Backend fonctionne et MongoDB est connecté !');
 });
+
+
+app.use('/api/produits', produitRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () => {
