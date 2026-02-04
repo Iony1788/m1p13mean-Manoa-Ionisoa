@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [RouterModule, HeaderComponent, FooterComponent],
+  template: `
+    <app-header></app-header>
+
+    <router-outlet></router-outlet>
+
+    <app-footer></app-footer>
+  `
 })
-export class App {
-  protected readonly title = signal('frontend');
-}
+export class App {}

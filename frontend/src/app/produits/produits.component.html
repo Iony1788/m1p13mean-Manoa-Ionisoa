@@ -1,0 +1,76 @@
+<main>
+
+  <!-- CATEGORIES -->
+  <section class="category-section container">
+    <h2>Explore Our Stores</h2>
+
+    <div class="category-grid">
+      <!-- MODE -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg" alt="Fashion" />
+          <h3>Fashion & Clothing</h3>
+        </a>
+      </div>
+
+      <!-- ELECTRONIQUE -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg" alt="Electronics" />
+          <h3>Electronics & Tech</h3>
+        </a>
+      </div>
+
+      <!-- BEAUTE -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg" alt="Beauty" />
+          <h3>Beauty & Cosmetics</h3>
+        </a>
+      </div>
+
+      <!-- RESTAURANTS -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" alt="Food Court" />
+          <h3>Restaurants & Food Court</h3>
+        </a>
+      </div>
+
+      <!-- MAISON -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg" alt="Home" />
+          <h3>Home & Decoration</h3>
+        </a>
+      </div>
+
+      <!-- ENFANTS -->
+      <div class="category-card">
+        <a routerLink="/produits" class="category-link">
+          <img src="https://images.pexels.com/photos/3662667/pexels-photo-3662667.jpeg" alt="Kids" />
+          <h3>Kids & Leisure</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FEATURED PRODUCTS -->
+ <section class="featured-products container">
+  <h2>Bestsellers</h2>
+  <div class="product-grid">
+    <div *ngFor="let p of produits" class="product-card">
+      <h3>{{ p.nom }}</h3>
+      <p>{{ p.description }}</p>
+      <p>{{ p.prix | currency:'USD':'symbol' }}</p>
+      <button class="btn btn-primary" [disabled]="!p.disponible">
+        {{ p.disponible ? 'Add to Cart' : 'Out of Stock' }}
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+</main>
