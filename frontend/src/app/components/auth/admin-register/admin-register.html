@@ -1,0 +1,29 @@
+<!-- admin-register.component.html -->
+<h2>Inscription Administrateur</h2>
+<div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="nom">Nom:</label>
+            <input id="nom" type="text" formControlName="nom" required>
+        </div>
+        
+        <div>
+            <label for="prenom">Prénom:</label>
+            <input id="prenom" type="text" formControlName="prenom" required>
+        </div>
+        
+        <div>
+            <label for="email">Email:</label>
+            <input id="email" type="email" formControlName="email" required>
+        </div>
+        
+        <div>
+            <label for="password">Mot de passe:</label>
+            <input id="password" type="password" formControlName="password" required>
+        </div>
+        
+        <button type="submit" [disabled]="!registerForm.valid">
+            S'inscrire
+        </button>
+    </form>
+</div>

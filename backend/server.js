@@ -16,9 +16,13 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error("Erreur de connexion MongoDB :", err));
 
 // Route de test
-app.get('/', (req, res) => {
-  res.send('Backend fonctionne et MongoDB est connecté !');
-});
+// app.get('/', (req, res) => {
+//   res.send('Backend fonctionne et MongoDB est connecté !');
+// });
+
+app.use('/uploads', express.static('uploads'));
+
+app.use('/api/auth', require('./routers/authRoutes'));
 
 // Démarrage du serveur
 app.listen(PORT, () => {

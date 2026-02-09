@@ -1,0 +1,48 @@
+<!-- boutique-register.component.html -->
+<h2>Inscription Boutique</h2>
+<div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <!-- Informations personnelles -->
+        <h3>Informations personnelles</h3>
+        <div>
+            <label for="nom">Nom:</label>
+            <input id="nom" type="text" formControlName="nom" required>
+        </div>
+        
+        <div>
+            <label for="prenom">Prénom:</label>
+            <input id="prenom" type="text" formControlName="prenom" required>
+        </div>
+        
+        <div>
+            <label for="email">Email:</label>
+            <input id="email" type="email" formControlName="email" required>
+        </div>
+        
+        <div>
+            <label for="password">Mot de passe:</label>
+            <input id="password" type="password" formControlName="password" required>
+        </div>
+        
+        <!-- Informations de la boutique -->
+        <h3>Informations de la boutique</h3>
+        <div>
+            <label for="boutiqueName">Nom de la boutique:</label>
+            <input id="boutiqueName" type="text" formControlName="boutiqueName" required>
+        </div>
+        
+        <div>
+            <label for="address">Adresse:</label>
+            <input id="address" type="text" formControlName="address">
+        </div>
+        
+        <div>
+            <label for="phone">Téléphone:</label>
+            <input id="phone" type="tel" formControlName="phone">
+        </div>
+        
+        <button type="submit" [disabled]="!registerForm.valid">
+            S'inscrire
+        </button>
+    </form>
+</div>

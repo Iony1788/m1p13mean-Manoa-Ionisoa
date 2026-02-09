@@ -1,0 +1,15 @@
+<div>
+    <h2>Connexion admin</h2> 
+    <form (ngSubmit)="login()" #userForm="ngForm" >
+        <div>
+            <label for="email">Email: </label>
+            <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
+        </div>
+        <div>
+            <label for="password">Mot de passe: </label>
+            <input type="password" id="password" name="password" [(ngModel)]="user.password" required>
+        </div>
+        <button type="submit" 
+        [disabled]="userForm.invalid">S'inscrire</button> 
+    </form>
+</div>
