@@ -57,20 +57,25 @@
 
 
   <!-- FEATURED PRODUCTS -->
- <section class="featured-products container">
+<section class="featured-products container">
   <h2>Bestsellers</h2>
-  <div class="product-grid">
+
+  <p *ngIf="produits.length === 0">
+    Aucun produit disponible
+  </p>
+
+  <div class="product-grid" *ngIf="produits.length > 0">
     <div *ngFor="let p of produits" class="product-card">
       <h3>{{ p.nom }}</h3>
+      <img [src]="p.image" alt="{{ p.nom }}" class="product-image" />
       <p>{{ p.description }}</p>
       <p>{{ p.prix | currency:'USD':'symbol' }}</p>
+      
       <button class="btn btn-primary" [disabled]="!p.disponible">
         {{ p.disponible ? 'Add to Cart' : 'Out of Stock' }}
       </button>
     </div>
   </div>
 </section>
-
-
 
 </main>

@@ -17,9 +17,13 @@ export class ProduitsComponent implements OnInit {
   ngOnInit() {
     this.produitsService.getProduits().subscribe({
       next: (data) => {
-        console.log('Produits reçus :', data);
+        console.log("Produits reçus :", JSON.stringify(data));
+        console.log("Length :", data.length);
         this.produits = data;
       },
+      
+
+
       error: (err) => console.error('Erreur API :', err)
     });
   }

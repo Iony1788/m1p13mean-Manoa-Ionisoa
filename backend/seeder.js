@@ -41,16 +41,89 @@ const seeder = async () => {
     ]);
 
     await Produit.insertMany([
-      { nom: 'T-shirt blanc', description: 'T-shirt coton blanc', prix: 15, id_boutique: boutiques[0]._id, idCategorie: categories[0]._id, quantiteStock: 100 },
-      { nom: 'T-shirt noir', description: 'T-shirt noir élégant', prix: 18, id_boutique: boutiques[0]._id, idCategorie: categories[0]._id, quantiteStock: 80 },
-      { nom: 'Jean slim', description: 'Jean bleu slim', prix: 35, id_boutique: boutiques[0]._id, idCategorie: categories[1]._id, quantiteStock: 60 },
-      { nom: 'Robe rouge', description: 'Robe élégante rouge', prix: 45, id_boutique: boutiques[0]._id, idCategorie: categories[2]._id, quantiteStock: 40 },
-      { nom: 'iPhone 13', description: 'Apple iPhone 13', prix: 900, id_boutique: boutiques[1]._id, idCategorie: categories[3]._id, quantiteStock: 20 },
-      { nom: 'Samsung Galaxy S22', description: 'Samsung haut de gamme', prix: 850, id_boutique: boutiques[1]._id, idCategorie: categories[3]._id, quantiteStock: 25 },
-      { nom: 'Laptop HP', description: 'Ordinateur portable HP', prix: 1200, id_boutique: boutiques[1]._id, idCategorie: categories[4]._id, quantiteStock: 15 },
-      { nom: 'Casque Bluetooth', description: 'Casque sans fil', prix: 80, id_boutique: boutiques[1]._id, idCategorie: categories[5]._id, quantiteStock: 50 },
-      { nom: 'Souris gaming', description: 'Souris RGB gaming', prix: 45, id_boutique: boutiques[1]._id, idCategorie: categories[5]._id, quantiteStock: 70 }
-    ]);
+  { 
+    nom: 'T-shirt blanc', 
+    description: 'T-shirt coton blanc', 
+    prix: 15, 
+    id_boutique: boutiques[0]._id, 
+    idCategorie: categories[0]._id, 
+    quantiteStock: 100,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898841/pexels-polina-zimmerman-3958526_ueqeor.jpg'
+  },
+  { 
+    nom: 'T-shirt noir', 
+    description: 'T-shirt noir élégant', 
+    prix: 18, 
+    id_boutique: boutiques[0]._id, 
+    idCategorie: categories[0]._id, 
+    quantiteStock: 80,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898836/pexels-by-natallia-311038782-13534508_egxnzo.jpg'
+  },
+  { 
+    nom: 'Jean slim', 
+    description: 'Jean bleu slim', 
+    prix: 35, 
+    id_boutique: boutiques[0]._id, 
+    idCategorie: categories[1]._id, 
+    quantiteStock: 60,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898834/pexels-jibarofoto-13570161_t5httw.jpg'
+  },
+  { 
+    nom: 'Robe rouge', 
+    description: 'Robe élégante rouge', 
+    prix: 45, 
+    id_boutique: boutiques[0]._id, 
+    idCategorie: categories[2]._id, 
+    quantiteStock: 40,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898834/pexels-knelstrom-67654_wepick.jpg'
+  },
+  { 
+    nom: 'iPhone 13', 
+    description: 'Apple iPhone 13', 
+    prix: 900, 
+    id_boutique: boutiques[1]._id, 
+    idCategorie: categories[3]._id, 
+    quantiteStock: 20,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898832/pexels-luci-23254259-6791447_ka32uc.jpg'
+  },
+  { 
+    nom: 'Samsung Galaxy S22', 
+    description: 'Samsung haut de gamme', 
+    prix: 850, 
+    id_boutique: boutiques[1]._id, 
+    idCategorie: categories[3]._id, 
+    quantiteStock: 25,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898832/pexels-vuong-tran-499453382-17714763_we6wf4.jpg'
+  },
+  { 
+    nom: 'Laptop HP', 
+    description: 'Ordinateur portable HP', 
+    prix: 1200, 
+    id_boutique: boutiques[1]._id, 
+    idCategorie: categories[4]._id, 
+    quantiteStock: 15,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898831/pexels-828860-2587370_ynsy36.jpg'
+  },
+  { 
+    nom: 'Casque Bluetooth', 
+    description: 'Casque sans fil', 
+    prix: 80, 
+    id_boutique: boutiques[1]._id, 
+    idCategorie: categories[5]._id, 
+    quantiteStock: 50,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898830/pexels-zeleboba-21854494_l1bcgm.jpg'
+  },
+  { 
+    nom: 'Souris gaming', 
+    description: 'Souris RGB gaming', 
+    prix: 45, 
+    id_boutique: boutiques[1]._id, 
+    idCategorie: categories[5]._id, 
+    quantiteStock: 70,
+    image: 'https://res.cloudinary.com/dgn6teusy/image/upload/v1770898830/pexels-dayong-tien-681073045-18257675_ne80d6.jpg'
+  }
+]);
+
 
     await BoutiqueUser.insertMany([
       { id_user: users[2]._id, id_boutique: boutiques[0]._id, roleDansBoutique: 1 },
