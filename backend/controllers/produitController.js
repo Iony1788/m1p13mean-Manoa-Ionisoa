@@ -18,3 +18,28 @@ exports.getAllProduits = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur lors de la récupération des produits" });
   }
 };
+
+exports.addProduit = async (req, res) => {
+  try {
+    const { nom, description, prix, id_boutique, idCategorie, quantiteStock, disponible } = req.body;
+    const imageUrl = req.file ? req.file.path : '';
+
+    const produit = new Produit({
+      nom,
+      description,
+      prix,
+      image: imageUrl,       
+      id_boutique,
+      idCategorie,
+      quantiteStock: quantiteStock || 0,
+      disponible: disponible || true,
+    });
+
+    await produit.save();
+    res.json({ message: 'Produit ajouté avec succès', produit });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur', error: err });
+  }
+};
+
