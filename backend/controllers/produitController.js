@@ -15,7 +15,10 @@ exports.getAllProduits = async (req, res) => {
     res.status(200).json(produits);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Erreur serveur lors de la récupération des produits" ,error: err});
+    res.status(500).json({
+      message: "Erreur serveur lors de la récupération des produits",
+      error: err
+    });
   }
 };
 
