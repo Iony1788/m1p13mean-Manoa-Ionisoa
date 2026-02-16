@@ -4,20 +4,27 @@ const Categorie = require('../models/Categorie');
 
 exports.getAllProduits = async (req, res) => {
   try {
-    const produits = await Produit.find()
+    console.log("Récupération des produits...");
+
+    const produits = await Produit.find();
+    console.log("Produits bruts :", produits);
+
+    const produitsPop = await Produit.find()
       .populate('id_boutique', 'nom adresse')
       .populate('idCategorie', 'nom description');
+    
+    console.log("Produits peuplés :", produitsPop);
 
-    if (!produits || produits.length === 0) {
+    if (!produitsPop || produitsPop.length === 0) {
       return res.status(404).json({ message: "Aucun produit trouvé" });
     }
 
-    res.status(200).json(produits);
+    res.status(200).json(produitsPop);
   } catch (err) {
-    console.error(err);
+    console.error("Erreur complète :", err);
     res.status(500).json({
       message: "Erreur serveur lors de la récupération des produits",
-      error: err
+      error: err.message || err
     });
   }
 };
