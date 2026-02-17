@@ -1,29 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProduitsService } from '../produits-service';
+import { ProduitsService, Produit } from '../produits-service';
 
 @Component({
   selector: 'app-produits',
-  imports :[ CommonModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './produits.component.html',
   styleUrls: ['./produits.component.css']
 })
 export class ProduitsComponent implements OnInit {
+  produits: Produit[] = [];
 
-  produits: any[] = [];
-
-  constructor(private produitsService: ProduitsService) { }
+  constructor(
+    private produitsService: ProduitsService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.produitsService.getProduits().subscribe({
       next: (data) => {
-        console.log("Produits reçus :", JSON.stringify(data));
-        console.log("Length :", data.length);
-        this.produits = data;
+        this.produits = data || [];
+        console.log('Produits reçus :', this.produits);
+        this.cdr.detectChanges(); // force Angular à rafraîchir la vue
       },
-      
-
-
       error: (err) => console.error('Erreur API :', err)
     });
   }
