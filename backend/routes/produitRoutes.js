@@ -20,4 +20,5 @@ router.post('/add', parser.single('image'), produitController.addProduit);
 
 router.get('/listProduitBoutique/:idBoutique', produitController.getListProduitWhitBoutique);
 
+
 module.exports = router;
