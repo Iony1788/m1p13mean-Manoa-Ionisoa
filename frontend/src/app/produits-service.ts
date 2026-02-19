@@ -37,4 +37,10 @@ export class ProduitsService {
   getProduits(): Observable<Produit[]> {
     return this.http.get<Produit[]>(this.apiUrlRemote);
   }
+
+  getProduitById(id: string) {
+  return this.http.get<any>(`${this.apiUrlRemote}/${id}`);
+}
+
+
 }

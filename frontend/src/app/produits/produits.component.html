@@ -66,15 +66,19 @@
         class="product-image" 
       />
       <h3>{{ p.nom }}</h3>
-      <p>{{ p.description }}</p>
       <p>{{ p.prix | currency:'USD':'symbol' }}</p>
       <p *ngIf="p.id_boutique">Boutique : {{ p.id_boutique.nom }}</p>
-      <p *ngIf="p.idCategorie">Catégorie : {{ p.idCategorie.nom }}</p>
+   
+      <a [routerLink]="['/produits', p._id]" class="btn btn-info">
+        See more
+      </a>
+
       <button class="btn btn-primary" [disabled]="!p.disponible">
         {{ p.disponible ? 'Add to Cart' : 'Out of Stock' }}
       </button>
     </div>
   </div>
 </section>
+
 
 </main>
