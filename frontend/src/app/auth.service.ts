@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5000/api/auth';
+  private apiUrl = 'https://m1p13mean-manoa-ionisoa.onrender.com/api/auth';
 
   constructor(private http: HttpClient) {}
 
