@@ -92,6 +92,8 @@ exports.addCartProduit = async (req, res) => {
 };
 
 
+
+
 exports.removeCartProduit = async (req, res) => {
   try {
     const { id_user, id_produit } = req.body;

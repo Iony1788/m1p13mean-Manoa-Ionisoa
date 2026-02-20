@@ -21,5 +21,20 @@ router.post('/add', upload.single('image'), addProduit);
 
 router.get('/listProduitBoutique/:idBoutique', produitController.getListProduitWhitBoutique);
 
+router.get('/categorie/:idCategorie', produitController.getListProduitWhitCategorie);
+
+
+router.get('/', produitController.getAllProduits);
+router.get('/:id', produitController.detailProduit);
+
+
+router.post('/:id/addCart', produitController.addCartProduit);
+router.delete('/:id/removeCart', produitController.removeCartProduit);
+router.put('/:id/updateCart', produitController.updateCartProduit);
+
+
+router.get('/listProduitBoutique/:idBoutique', produitController.getListProduitWhitBoutique);
+
+
 
 module.exports = router;

@@ -61,6 +61,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Erreur serveur", error: err.message || err });
 });
 
+const authRoutes = require('./routes/auth'); 
+app.use('/api/auth', authRoutes);
+
 // ------------------ DEMARRAGE SERVEUR ------------------
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
