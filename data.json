@@ -9,45 +9,7 @@
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
 
-    "RoleAssignment": {
-      "user": { "type": "ObjectId", "ref": "User", "required": true },
-      "role": { "type": "Number", "enum": [0, 1, 2], "required": true },
-      "adminProfile": { "type": "ObjectId", "ref": "AdminProfile" },
-      "acheteurProfile": { "type": "ObjectId", "ref": "AcheteurProfile" },
-      "boutiqueProfile": { "type": "ObjectId", "ref": "BoutiqueProfile" },
-      "createdAt": { "type": "Date", "default": "Date.now" },
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
 
-    "AdminProfile": {
-      "name": { "type": "String", "required": true },
-      "createdAt": { "type": "Date", "default": "Date.now" },
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
-
-    "AcheteurProfile": {
-      "name": { "type": "String", "required": true },
-      "photo": { "type": "String" },
-      "createdAt": { "type": "Date", "default": "Date.now" },
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
-
-    "BoutiqueProfile": {
-      "name": { "type": "String", "required": true },
-      "address": { "type": "String" },
-      "phone": { "type": "String" },
-      "isValidated": { "type": "Boolean", "default": false },
-      "createdAt": { "type": "Date", "default": "Date.now" },
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
-
-    "BoutiqueUser": {
-      "user": { "type": "ObjectId", "ref": "User", "required": true },
-      "boutique": { "type": "ObjectId", "ref": "BoutiqueProfile", "required": true },
-      "roleDansBoutique": { "type": "Number", "enum": [0, 1, 2], "required": true },
-      "createdAt": { "type": "Date", "default": "Date.now" },
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
 
     "Categorie": {
       "name": { "type": "String", "required": true },

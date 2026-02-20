@@ -1,0 +1,110 @@
+/* Container général */
+#login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f5f7fa);
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Boîte login */
+.login-box {
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Titre et description */
+.login-box h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.login-box p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+/* Formulaire */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Boutons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #65e7aa;
+  color: #fff;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #1ca122;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Message d'erreur / succès */
+.form-message {
+  margin-top: 1rem;
+  color: red;
+  font-weight: 500;
+}
+
+/* Lien Register */
+.register-link {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.register-link p {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 0.9rem;
+}

@@ -18,18 +18,18 @@
           Shop
         </a>
       </li>
-       <li>
-       <button routerLink="/produits" routerLinkActive="active" class="nav-btn">
+      <li>
+        <button routerLink="/login" routerLinkActive="active" class="nav-btn">
           Login
-       </button>
-
+        </button>
       </li>
     </ul>
 
+    <!-- Nav icons -->
     <div class="nav-icons">
       <div class="cart-icon">
         <i class="fas fa-shopping-cart"></i>
-        <span class="cart-count">0</span>
+        <span class="cart-count">{{ cartTotal }}</span>
       </div>
 
       <button class="theme-toggle-btn" aria-label="Toggle Theme">
@@ -41,5 +41,7 @@
         <i class="fas fa-bars"></i>
       </button>
     </div>
+    <!-- Fin nav-icons -->
+    
   </nav>
 </header>

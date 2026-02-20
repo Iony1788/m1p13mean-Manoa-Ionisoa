@@ -24,6 +24,8 @@ export interface Produit {
   quantiteStock: number;
   id_boutique?: Boutique;
   idCategorie?: Categorie;
+
+  quantity?: number;
 }
 
 @Injectable({
@@ -39,8 +41,23 @@ export class ProduitsService {
   }
 
   getProduitById(id: string) {
-  return this.http.get<any>(`${this.apiUrlRemote}/${id}`);
+    return this.http.get<any>(`${this.apiUrlRemote}/${id}`);
+  }
+
+  addCartProduit(productId: string, userId: string, quantite: number) {
+  return this.http.post<any>(`${this.apiUrlRemote}/${productId}/addCart`, {
+    id_user: userId,
+    quantite
+  });
 }
+
+
+  getCart(idUser: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlRemote}/cart/${idUser}`);
+  }
+
+
+  
 
 
 }

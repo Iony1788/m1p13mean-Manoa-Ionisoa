@@ -1,0 +1,39 @@
+<section id="register-section" class="container page-section">
+  <div class="login-box">
+    <h2>Create an Account</h2>
+    <p>Join FreshMart to start shopping fresh organic products.</p>
+
+    <form id="register-form">
+      <div class="form-group">
+        <label for="reg-nom">Nom</label>
+        <input type="text" [(ngModel)]="nom" name="nom" required placeholder="Nom" />
+      </div>
+
+      <div class="form-group">
+        <label for="reg-prenom">Prénom</label>
+        <input type="text" [(ngModel)]="prenom" name="prenom" required placeholder="Prénom" />
+      </div>
+
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required placeholder="Email" />
+      </div>
+
+      <div class="form-group">
+        <label for="reg-password">Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required placeholder="Password" />
+      </div>
+
+      <div class="form-group">
+        <label for="reg-role">Role</label>
+        <select id="reg-role" [(ngModel)]="role" name="role" required>
+          <option value="acheteur">Acheteur</option>
+          <option value="boutique">Boutique</option>
+        </select>
+      </div> 
+      <button (click)="onRegister()" class="btn btn-secondary">Register</button>
+    </form>
+
+    <p id="register-message" class="form-message">{{ message }}</p>
+  </div>
+</section>
