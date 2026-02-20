@@ -1,39 +1,50 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
+
 const produitRoutes = require('./routes/produitRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ------------------ MIDDLEWARES ------------------
+// CORS
 app.use(cors({
-  origin: '*',
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  origin: '*', // Pour tester, sinon mettre l'URL du frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Parser JSON
 app.use(express.json());
+
+// Logger simple pour chaque requête
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// Vérification de la variable d'environnement
+// Servir les fichiers statiques (images, uploads)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ------------------ VERIFICATION ENV ------------------
 if (!process.env.MONGO_URI) {
   console.error("MONGO_URI non défini !");
   process.exit(1);
 }
 
-// Connexion MongoDB (sans options obsolètes)
+// ------------------ CONNEXION MONGODB ------------------
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connecté avec succès"))
+  .then(() => console.log("MongoDB connecté avec succès !"))
   .catch(err => {
     console.error("Erreur de connexion MongoDB :", err);
     process.exit(1);
   });
 
-// Route de test
+// ------------------ ROUTES ------------------
+// Route test simple
 app.get('/', (req, res) => {
   res.send('Backend fonctionne et MongoDB est connecté !');
 });
@@ -41,13 +52,16 @@ app.get('/', (req, res) => {
 // Routes produits
 app.use('/api/produits', produitRoutes);
 
-// Gestion globale des erreurs
+// ------------------ GESTION GLOBALE DES ERREURS ------------------
 app.use((err, req, res, next) => {
   console.error("Erreur globale :", err);
+  if (res.headersSent) {
+    return next(err);
+  }
   res.status(500).json({ message: "Erreur serveur", error: err.message || err });
 });
 
-// Démarrage serveur
+// ------------------ DEMARRAGE SERVEUR ------------------
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });

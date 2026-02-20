@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const produitController = require('../controllers/produitController');
-const parser = require('../config/cloudinaryConfig').parser;
+const upload = require('../config/multerConfig');
+const { addProduit } = require('../controllers/produitController');
 
 
 router.get('/categorie/:idCategorie', produitController.getListProduitWhitCategorie);
@@ -16,7 +17,7 @@ router.delete('/:id/removeCart', produitController.removeCartProduit);
 router.put('/:id/updateCart', produitController.updateCartProduit);
 
 
-router.post('/add', parser.single('image'), produitController.addProduit);
+router.post('/add', upload.single('image'), addProduit);
 
 router.get('/listProduitBoutique/:idBoutique', produitController.getListProduitWhitBoutique);
 

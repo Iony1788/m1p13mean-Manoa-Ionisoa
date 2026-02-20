@@ -149,3 +149,26 @@ exports.getListProduitWhitBoutique = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err });
   }
 };
+
+
+//image multer
+exports.addProduitImage = async (req, res) => {
+  try {
+    const { nom, description, prix, idCategorie, id_boutique } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : '';
+
+    const produit = await Produit.create({
+      nom,
+      description,
+      prix,
+      idCategorie,
+      id_boutique,
+      image
+    });
+
+    res.status(201).json(produit);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur', error: err });
+  }
+};
