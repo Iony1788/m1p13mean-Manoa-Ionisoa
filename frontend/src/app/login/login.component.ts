@@ -18,15 +18,23 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
-    this.authService.login(this.email, this.password).subscribe({
-      next: (res) => {
-        this.authService.saveToken(res.token);
-        this.router.navigate(['/']); // redirection
-      },
-      error: (err) => {
-        this.message = err.error.message || 'Login failed';
+ onLogin() {
+  this.authService.login(this.email, this.password).subscribe({
+    next: (res) => {
+      if (!res.token) {
+        this.message = 'Token non reçu du serveur';
+        return;
       }
-    });
-  }
+      console.log('Token reçu après login:', res);
+
+      this.authService.saveToken(res.token);
+      console.log('Token stocké après login:', this.authService.getToken());
+
+      this.router.navigate(['/']);
+    },
+    error: (err) => {
+      this.message = err.error.message || 'Login failed';
+    }
+  });
+}
 }

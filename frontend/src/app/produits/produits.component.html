@@ -32,15 +32,16 @@
         <h3>{{ p.nom }}</h3>
         <p>{{ p.prix | currency:'USD':'symbol' }}</p>
         <p *ngIf="p.id_boutique">Boutique : {{ p.id_boutique.nom }}</p>
-        
+
         <!-- See more -->
         <a class="btn btn-info" (click)="openProductModal(p)">See more</a>
 
-        <!-- Add to Cart -->
-        <button class="btn btn-primary" [disabled]="!p.disponible"
-                (click)="addToCart(p, p.quantity || 1)">
+        <button class="btn btn-primary"
+                [disabled]="!p.disponible"
+                (click)="addToCart(p, quantity)">
           {{ p.disponible ? 'Add to Cart' : 'Out of Stock' }}
         </button>
+
       </div>
     </div>
   </section>
@@ -65,8 +66,8 @@
             <button class="btn btn-secondary btn-sm" (click)="quantity = quantity + 1">+</button>
           </div>
 
-          <!-- Add to Cart -->
-          <button class="btn btn-primary" [disabled]="!selectedProduct.disponible"
+          <button class="btn btn-primary"
+                  [disabled]="!selectedProduct.disponible"
                   (click)="addToCart(selectedProduct, quantity)">
             {{ selectedProduct.disponible ? 'Add to Cart' : 'Out of Stock' }}
           </button>

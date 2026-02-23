@@ -1,6 +1,7 @@
 const Produit = require('../models/Produit');
 const Boutique = require('../models/Boutique');
 const Categorie = require('../models/Categorie');
+const Panier = require('../models/Panier');
 
 exports.getAllProduits = async (req, res) => {
   try {
@@ -30,32 +31,6 @@ exports.getAllProduits = async (req, res) => {
 };
 
 
-
-exports.addProduit = async (req, res) => {
-  try {
-    const { nom, description, prix, id_boutique, idCategorie, quantiteStock, disponible } = req.body;
-    const imageUrl = req.file ? req.file.path : '';
-
-    const produit = new Produit({
-      nom,
-      description,
-      prix,
-      image: imageUrl,       
-      id_boutique,
-      idCategorie,
-      quantiteStock: quantiteStock || 0,
-      disponible: disponible || true,
-    });
-
-    await produit.save();
-    res.json({ message: 'Produit ajouté avec succès', produit });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erreur serveur', error: err });
-  }
-};
-
-
 exports.detailProduit = async (req, res) => {
   try {
     const produit = await Produit.findById(req.params.id)
@@ -71,27 +46,6 @@ exports.detailProduit = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err });
   }
 };
-
-
-exports.addCartProduit = async (req, res) => {
-  try {
-    const id_produit = req.params.id;   
-    const { id_user, quantite } = req.body;
-
-    res.json({
-      message: 'Produit ajouté au panier avec succès',
-      id_produit,
-      id_user,
-      quantite
-    });
-
-  } catch (err) {
-    console.error(err); 
-    res.status(500).json({ message: 'Erreur serveur', error: err });
-  }
-};
-
-
 
 
 exports.removeCartProduit = async (req, res) => {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CartService } from '../cart.service'; // Assure-toi du chemin correct
+import { PanierService } from '../panier.service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +11,11 @@ import { CartService } from '../cart.service'; // Assure-toi du chemin correct
 export class HeaderComponent implements OnInit {
   cartTotal: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private panierService: PanierService) {}
 
   ngOnInit() {
-    this.cartService.total$.subscribe(total => this.cartTotal = total);
+    this.panierService.total$.subscribe(total => {
+      this.cartTotal = total;
+    });
   }
 }

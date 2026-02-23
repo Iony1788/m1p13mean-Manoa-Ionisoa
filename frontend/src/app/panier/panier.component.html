@@ -1,0 +1,12 @@
+<div *ngIf="panier">
+  <h3>Panier</h3>
+  <p>Total Items: {{ panier.totalItems }}</p>
+  <p>Total Quantity: {{ panier.totalQuantity }}</p>
+  <p>Total Price: {{ panier.totalPrice }} €</p>
+
+  <ul>
+    <li *ngFor="let item of panier.produits">
+      {{ item.nom }} - {{ item.quantite }} x {{ item.prix }} €
+    </li>
+  </ul>
+</div>

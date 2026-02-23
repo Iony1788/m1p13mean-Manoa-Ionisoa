@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Produit, ProduitsService } from '../produits-service';
-import { CartService } from '../cart.service';
+import { PanierService } from '../panier.service';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class ProduitsComponent implements OnInit {
 
   constructor(
     private produitsService: ProduitsService,
-    private cartService: CartService,
+    private panierService: PanierService, 
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -53,49 +53,6 @@ export class ProduitsComponent implements OnInit {
   }
 
 
-addToCart(product: Produit, quantite?: number) {
-  if (!product?._id) return;
-  quantite = quantite || 1;
-
-  this.produitsService.addCartProduit(product._id, this.userId, quantite)
-    .subscribe({
-      next: (res: any) => {
-        // Met à jour le compteur total du panier
-        this.cartService.addToCart(quantite!);
-
-        // Popup ultra rapide
-        const popup = document.createElement('div');
-        popup.textContent = `"${product.nom}" ajouté (${quantite})`;
-        popup.style.position = 'fixed';
-        popup.style.top = '10px';
-        popup.style.right = '10px';
-        popup.style.background = '#c89e44';
-        popup.style.color = '#fff';
-        popup.style.padding = '8px 12px';
-        popup.style.borderRadius = '4px';
-        popup.style.zIndex = '9999';
-        document.body.appendChild(popup);
-        setTimeout(() => document.body.removeChild(popup), 800);
-
-        this.closeModal();
-      },
-      error: (err) => {
-        const popup = document.createElement('div');
-        popup.textContent = `Erreur ajout panier`;
-        popup.style.position = 'fixed';
-        popup.style.top = '10px';
-        popup.style.right = '10px';
-        popup.style.background = '#f44336';
-        popup.style.color = '#fff';
-        popup.style.padding = '8px 12px';
-        popup.style.borderRadius = '4px';
-        popup.style.zIndex = '9999';
-        document.body.appendChild(popup);
-        setTimeout(() => document.body.removeChild(popup), 800);
-      }
-    });
-}
-
 
   // Sélecteur quantité côté produit (liste)
   increaseQuantity(product: any) {
@@ -106,4 +63,18 @@ addToCart(product: Produit, quantite?: number) {
     product.quantity = (product.quantity || 1) - 1;
     if (product.quantity < 1) product.quantity = 1;
   }
+
+    // Fonction pour ajouter un produit au panier
+    addToCart(produit: any, quantite: number) {
+      this.panierService.addCartProduit(produit._id, quantite).subscribe({
+        next: (res) => {
+          console.log('Produit ajouté:', res);
+          alert('Produit ajouté au panier !');
+        },
+        error: (err) => {
+          console.error('Erreur ajout panier:', err);
+          alert('Erreur lors de l’ajout au panier');
+        }
+      });
+    }
 }

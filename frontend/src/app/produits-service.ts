@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -32,29 +32,24 @@ export interface Produit {
   providedIn: 'root',
 })
 export class ProduitsService {
+
+  private apiUrl = 'http://localhost:5000/api/produits'; 
   private apiUrlRemote = 'https://m1p13mean-manoa-ionisoa.onrender.com/api/produits';
+
 
   constructor(private http: HttpClient) { }
 
   getProduits(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(this.apiUrlRemote);
+    return this.http.get<Produit[]>(this.apiUrl);
   }
 
   getProduitById(id: string) {
-    return this.http.get<any>(`${this.apiUrlRemote}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  addCartProduit(productId: string, userId: string, quantite: number) {
-  return this.http.post<any>(`${this.apiUrlRemote}/${productId}/addCart`, {
-    id_user: userId,
-    quantite
-  });
-}
+ 
 
 
-  getCart(idUser: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrlRemote}/cart/${idUser}`);
-  }
 
 
   
