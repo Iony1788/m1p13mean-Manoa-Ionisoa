@@ -1,15 +1,24 @@
 import { Routes } from '@angular/router';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { ProduitsComponent } from './produits/produits.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { PanierComponent } from './panier/panier.component';
+import { MainLayoutComponent } from './acheteur/layouts/main-layout/main-layout.component';
+import { HomeComponent } from './acheteur/home/home.component';
+import { ProduitsComponent } from './acheteur/produits/produits.component';
+import { PanierComponent } from './acheteur/panier/panier.component';
+import { AuthLayoutComponent } from './acheteur/layouts/auth-layout/auth-layout.component';
+import { LoginComponent } from './acheteur/login/login.component';
+import { RegisterComponent } from './acheteur/register/register.component';
+import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
+import { BoutiqueListProduitComponent } from './boutique/boutique-list-produit/boutique-list-produit.component';
+import { BoutiqueListCommandeComponent } from './boutique/boutique-list-commande/boutique-list-commande.component';
+import { BoutiqueInfoComponent } from './boutique/boutique-info/boutique-info.component';
+import { AjoutPromotionComponent } from './boutique/ajout-promotion/ajout-promotion.component';
+import { AdminListBoutiqueComponent } from './admin/admin-list-boutique/admin-list-boutique.component';
+import { AdminListLotComponent } from './admin/admin-list-lots/admin-list-lots.component';
 
 export const routes: Routes = [
+
+  //ACHETEUR
   {
     path: '',
     component: MainLayoutComponent,
@@ -20,14 +29,41 @@ export const routes: Routes = [
       
     ]
   },
+
+
+  //AUTHENTIFICATION
   {
     path: '',
     component: AuthLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'admin-login', component: LoginAdminComponent }
+   
     ]
-  }
+  },
+
+  //ADMIN
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      { path: 'dashboard', component: AdminDashboardComponent },
+      
+      { path: 'list-boutique', component: AdminListBoutiqueComponent },
+
+      { path: 'list-produit', component: BoutiqueListProduitComponent },
+
+      { path: 'list-commande', component: BoutiqueListCommandeComponent },
+
+      { path: 'list-lot', component: AdminListLotComponent},
+
+      { path: 'boutique-info', component: BoutiqueInfoComponent },
+
+      { path: 'ajout-promotion', component: AjoutPromotionComponent }
+      
+    ]
+  },
 ];
 
 

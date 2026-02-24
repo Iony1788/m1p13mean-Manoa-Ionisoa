@@ -6,8 +6,8 @@ const bcrypt = require('bcrypt');
 const User = require('./models/User');
 const Categorie = require('./models/Categorie');
 const Produit = require('./models/Produit');
-const BoutiqueUser = require('./models/BoutiqueUser');
 const Boutique = require('./models/Boutique');
+const Lot = require('./models/lot');
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connecté pour le seeding'))
@@ -19,14 +19,16 @@ const seeder = async () => {
     await User.deleteMany();
     await Categorie.deleteMany();
     await Produit.deleteMany();
-    await BoutiqueUser.deleteMany();
     await Boutique.deleteMany();
+    await Lot.deleteMany();
 
     // ------------------ Créer les boutiques ------------------
     const boutiques = await Boutique.insertMany([
       { nom: 'Boutique Vetements', adresse: 'Ankorondrano', description: 'Vêtements homme et femme', telephone: '21234567' },
       { nom: 'Boutique Tech', adresse: 'Ankorondrano', description: 'Électronique et accessoires', telephone: '21234568' }
     ]);
+
+ 
 
     // ------------------ Créer les catégories ------------------
     const categories = await Categorie.insertMany([
@@ -44,8 +46,23 @@ const seeder = async () => {
       { nom: 'Ionisoa', prenom: 'Raya', email: 'raya@example.com', password: hashedPassword, role: 'acheteur' },
       { nom: 'John', prenom: 'Doe', email: 'john@example.com', password: hashedPassword, role: 'acheteur' },
       { nom: 'BoutiqueAdmin', prenom: 'Alice', email: 'alice@boutique.com', password: hashedPassword, role: 'boutique' },
-      { nom: 'BoutiqueUser', prenom: 'Bob', email: 'bob@boutique.com', password: hashedPassword, role: 'boutique' }
+      { nom: 'BoutiqueUser', prenom: 'Bob', email: 'bob@boutique.com', password: hashedPassword, role: 'boutique' },
+      // Ajouter un utilisateur admin
+      { nom: 'Admin',prenom: 'System',email: 'admin@example.com',password: hashedPassword,role: 'admin'}
     ]);
+
+    // ------------------ Lots ------------------
+        const lots = await Lot.insertMany([
+      { nom_lot: 'Lot A1', superficie: 50, prix_location: 500, niveau: 'Rez-de-chaussée', etape: 'libre', description: 'Lot proche entrée principale', id_boutique: boutiques[0]._id },
+      { nom_lot: 'Lot A2', superficie: 40, prix_location: 400, niveau: 'Rez-de-chaussée', etape: 'occupé', description: 'Lot côté gauche', id_boutique: boutiques[0]._id },
+      { nom_lot: 'Lot B1', superficie: 60, prix_location: 600, niveau: '1er étage', etape: 'libre', description: 'Lot avec grande vitrine', id_boutique: boutiques[0]._id },
+      { nom_lot: 'Lot B2', superficie: 55, prix_location: 550, niveau: '1er étage', etape: 'réservé', description: 'Lot côté escalier', id_boutique: boutiques[0]._id },
+      { nom_lot: 'Lot C1', superficie: 70, prix_location: 700, niveau: '2ème étage', etape: 'libre', description: 'Lot central', id_boutique: boutiques[1]._id },
+      { nom_lot: 'Lot C2', superficie: 65, prix_location: 650, niveau: '2ème étage', etape: 'occupé', description: 'Lot près des toilettes', id_boutique: boutiques[1]._id },
+      { nom_lot: 'Lot D1', superficie: 80, prix_location: 800, niveau: '3ème étage', etape: 'libre', description: 'Lot avec balcon', id_boutique: boutiques[1]._id },
+      { nom_lot: 'Lot D2', superficie: 75, prix_location: 750, niveau: '3ème étage', etape: 'réservé', description: 'Lot côté gauche', id_boutique: boutiques[1]._id }
+    ]);
+    
 
     // ------------------ Créer les produits ------------------
     await Produit.insertMany([
@@ -60,13 +77,6 @@ const seeder = async () => {
       { nom: 'Souris gaming', description: 'Souris RGB gaming', prix: 45, id_boutique: boutiques[1]._id, idCategorie: categories[5]._id, quantiteStock: 70, image: '/uploads/camera.jpg' }
     ]);
 
-    // ------------------ Créer les liens boutique/utilisateur ------------------
-    await BoutiqueUser.insertMany([
-      { id_user: users[2]._id, id_boutique: boutiques[0]._id, roleDansBoutique: 1 },
-      { id_user: users[2]._id, id_boutique: boutiques[1]._id, roleDansBoutique: 1 },
-      { id_user: users[3]._id, id_boutique: boutiques[0]._id, roleDansBoutique: 2 }
-    ]);
-
     console.log('Seeding terminé avec succès !');
     mongoose.connection.close();
 
@@ -75,5 +85,4 @@ const seeder = async () => {
     mongoose.connection.close();
   }
 };
-
 seeder();

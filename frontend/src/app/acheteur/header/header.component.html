@@ -1,0 +1,47 @@
+<header class="header">
+  <nav class="navbar container">
+    <a routerLink="/" class="logo">CityMall</a>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search for products..." />
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </div>
+
+    <ul class="nav-links" style="margin-top: 18px;">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Home
+        </a>
+      </li>
+      <li>
+        <a routerLink="/produits" routerLinkActive="active">
+          Shop
+        </a>
+      </li>
+      <li>
+        <button routerLink="/login" routerLinkActive="active" class="nav-btn">
+          Login
+        </button>
+      </li>
+    </ul>
+
+    <!-- Nav icons -->
+    <div class="nav-icons">
+      <div class="cart-icon">
+        <i class="fas fa-shopping-cart" routerLink="/panier" routerLinkActive="active"></i>
+        <span class="cart-count">{{ cartTotal }}</span>
+      </div>panier
+
+      <button class="theme-toggle-btn" aria-label="Toggle Theme">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <button class="menu-toggle" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <!-- Fin nav-icons -->
+    
+  </nav>
+</header>

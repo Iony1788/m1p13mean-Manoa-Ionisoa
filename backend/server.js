@@ -6,7 +6,8 @@ require('dotenv').config();
 
 const produitRoutes = require('./routes/produitRoutes');
 const panierRoutes = require('./routes/panierRoutes');
-
+const boutiqueRoutes = require('./routes/boutiqueRoutes');
+const lotRoutes = require('./routes/lotRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -54,7 +55,8 @@ app.get('/', (req, res) => {
 // Routes produits
 app.use('/api/produits', produitRoutes);
 app.use('/api/panier', panierRoutes);
-
+app.use('/api/boutiques', boutiqueRoutes);
+app.use('/api/lot', lotRoutes);
 
 // ------------------ GESTION GLOBALE DES ERREURS ------------------
 app.use((err, req, res, next) => {

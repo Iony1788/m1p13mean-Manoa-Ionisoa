@@ -13,6 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET ;
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 
+
 module.exports = router;
 
 

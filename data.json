@@ -8,16 +8,12 @@
       "createdAt": { "type": "Date", "default": "Date.now" },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
-
-
     "Categorie": {
       "name": { "type": "String", "required": true },
       "isValidated": { "type": "Boolean", "default": false },
       "createdAt": { "type": "Date", "default": "Date.now" },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Produit": {
       "name": { "type": "String", "required": true },
       "categorie": { "type": "ObjectId", "ref": "Categorie", "required": true },
@@ -29,50 +25,44 @@
       "createdAt": { "type": "Date", "default": "Date.now" },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Stock": {
       "produit": { "type": "ObjectId", "ref": "Produit", "required": true },
       "quantity": { "type": "Number", "required": true },
-      "movementType": { "type": "Number", "enum": [0, 1], "required": true }, 
+      "movementType": { "type": "Number", "enum": [0, 1], "required": true },
       "dateStock": { "type": "Date", "default": "Date.now" },
       "boutiqueProfile": { "type": "ObjectId", "ref": "BoutiqueProfile", "required": true },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Commission": {
       "pourcentage": { "type": "Number", "required": true },
       "dateChangement": { "type": "Date", "required": true },
       "adminProfile": { "type": "ObjectId", "ref": "AdminProfile", "required": true },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Avis": {
       "note": { "type": "Number", "required": true },
       "commentaire": { "type": "String" },
-      "type": { "type": "Number", "enum": [0, 1], "required": true }, 
+      "type": { "type": "Number", "enum": [0, 1], "required": true },
       "produit": { "type": "ObjectId", "ref": "Produit" },
       "boutiqueProfile": { "type": "ObjectId", "ref": "BoutiqueProfile" },
       "acheteurProfile": { "type": "ObjectId", "ref": "AcheteurProfile", "required": true },
       "createdAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Panier": {
       "acheteurProfile": { "type": "ObjectId", "ref": "AcheteurProfile", "required": true },
       "produits": [{ "type": "ObjectId", "ref": "Produit", "required": true }],
-      "produitsSnapshot": [{ "type": "Mixed" }], 
+      "produitsSnapshot": [{ "type": "Mixed" }],
       "dateValidation": { "type": "Date" },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Commande": {
       "panier": { "type": "ObjectId", "ref": "Panier", "required": true },
-      "statut": { "type": "Number", "enum": [0, 1, 2], "required": true }, 
-      "modeLivraison": { "type": "Number", "enum": [0, 1], "required": true }, 
+      "statut": { "type": "Number", "enum": [0, 1, 2], "required": true },
+      "modeLivraison": { "type": "Number", "enum": [0, 1], "required": true },
       "dateAchat": { "type": "Date", "default": "Date.now" },
       "produitsSnapshot": [{ "type": "Mixed" }],
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-
     "Notification": {
       "notification": { "type": "String", "required": true },
       "id_boutique": { "type": "ObjectId", "ref": "BoutiqueProfile" },
@@ -80,14 +70,22 @@
       "id_produit": { "type": "ObjectId", "ref": "Produit" },
       "createdAt": { "type": "Date", "default": "Date.now" }
     },
-
-    "Achat": {
-      "date": { "type": "Date", "required": true },
-      "id_user": { "type": "ObjectId", "ref": "User", "required": true },
-      "id_produit": { "type": "ObjectId", "ref": "Produit", "required": true },
+    "Lot": {
+      "nom_lot": { "type": "String", "required": true },
+      "superficie": { "type": "Number" },
+      "prix_location": { "type": "Number", "default": 0.0 },
+      "niveau": { "type": "String" },
+      "etape": { "type": "String" },
+      "description": { "type": "String" },
+      "date_creation": { "type": "Date", "default": "Date.now" },
+      "date_modification": { "type": "Date", "default": "Date.now" }
+    },
+    "LocationLot": {
+      "id_lot": { "type": "ObjectId", "ref": "Lot", "required": true },
       "id_boutique": { "type": "ObjectId", "ref": "BoutiqueProfile", "required": true },
-      "quantite": { "type": "Number", "required": true },
-      "createdAt": { "type": "Date", "default": "Date.now" }
+      "date_debut": { "type": "Date" },
+      "date_fin": { "type": "Date" },
+      "statut": { "type": "String", "default": "en cours" }
     }
   }
 }

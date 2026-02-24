@@ -1,0 +1,81 @@
+<main>
+  <!-- CATEGORIES -->
+  <section class="category-section container">
+    <h2>Explore Our Stores</h2>
+    <div class="category-grid">
+      <div class="category-card" *ngFor="let cat of [
+        {name:'Fashion & Clothing', img:'https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg'},
+        {name:'Electronics & Tech', img:'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg'},
+        {name:'Beauty & Cosmetics', img:'https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg'},
+        {name:'Restaurants & Food Court', img:'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg'},
+        {name:'Home & Decoration', img:'https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg'},
+        {name:'Kids & Leisure', img:'https://images.pexels.com/photos/3662667/pexels-photo-3662667.jpeg'}
+      ]">
+        <a routerLink="/produits" class="category-link">
+          <img [src]="cat.img" [alt]="cat.name" />
+          <h3>{{ cat.name }}</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUITS -->
+  <section class="featured-products container">
+    <h2>Bestsellers</h2>
+
+    <!-- Popup confirmation -->
+    <div class="popup" *ngIf="showPopup">{{ popupMessage }}</div>
+
+    <div class="product-grid">
+      <div *ngFor="let p of produits" class="product-card">
+        <img [src]="getImageUrl(p.image)" [alt]="p.nom" class="product-image" />
+        <h3>{{ p.nom }}</h3>
+        <p>{{ p.prix | currency:'USD':'symbol' }}</p>
+        <p *ngIf="p.id_boutique">Boutique : {{ p.id_boutique.nom }}</p>
+
+        <!-- See more -->
+       <a class="see-more-link" (click)="openProductModal(p)">See more</a>
+
+        <button class="btn btn-primary"
+                [disabled]="!p.disponible"
+                (click)="addToCart(p, quantity)">
+          {{ p.disponible ? 'Add to Cart' : 'Out of Stock' }}
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal" [ngStyle]="{'display': selectedProduct ? 'flex' : 'none'}">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div *ngIf="selectedProduct" class="product-detail">
+        <img [src]="getImageUrl(selectedProduct.image)" [alt]="selectedProduct.nom" class="product-detail-image">
+        <div class="product-detail-info">
+          <h2>{{ selectedProduct.nom }}</h2>
+          <p *ngIf="selectedProduct.idCategorie">Catégorie : {{ selectedProduct.idCategorie.nom }}</p>
+          <p>{{ selectedProduct.prix | currency:'USD':'symbol' }}</p>
+          <p>{{ selectedProduct.description }}</p>
+          <p *ngIf="selectedProduct.id_boutique">Boutique : {{ selectedProduct.id_boutique.nom }} - {{ selectedProduct.id_boutique.adresse }}</p>
+
+          <!-- Sélecteur quantité -->
+          <div style="display: flex; align-items: center; margin: 10px 0;">
+            <button class="btn btn-secondary btn-sm" (click)="quantity = quantity > 1 ? quantity - 1 : 1">-</button>
+            <span style="margin: 0 10px;">{{ quantity }}</span>
+            <button class="btn btn-secondary btn-sm" (click)="quantity = quantity + 1">+</button>
+          </div>
+
+          <button class="btn btn-primary"
+                  [disabled]="!selectedProduct.disponible"
+                  (click)="addToCart(selectedProduct, quantity)">
+            {{ selectedProduct.disponible ? 'Add to Cart' : 'Out of Stock' }}
+          </button>
+
+          <!-- Retour -->
+          <button class="btn btn-secondary" style="margin-top: 10px;" (click)="closeModal()">Retour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

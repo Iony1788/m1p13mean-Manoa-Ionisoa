@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Admin - Liste des Boutiques</h2>
+  <div class="card shadow-lg border-0">
+
+    <!-- Header -->
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Liste des Boutiques</h4>
+      <span class="badge bg-light text-dark">
+        {{ boutiques.length }} Boutique(s)
+      </span>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+
+       <table class="table table-hover align-middle table-sm">
+
+          <thead class="table-success">
+            <tr>
+              <th>#</th>
+              <th>Nom</th>
+              <th>Adresse</th>
+              <th>Téléphone</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <ng-container *ngIf="boutiques.length > 0; else emptyState">
+
+              <tr *ngFor="let boutique of boutiques; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td class="fw-semibold">{{ boutique.nom }}</td>
+                <td>{{ boutique.adresse }}</td>
+                <td>{{ boutique.telephone }}</td>
+
+                <td class="text-center">
+                    <button class="btn btn-sm btn-success me-2" title="Ajouter">
+                      <i class="fas fa-plus fa-sm"></i>
+                    </button>
+
+                    <button class="btn btn-sm btn-primary me-2" title="Modifier">
+                      <i class="fas fa-edit fa-sm"></i>
+                    </button>
+
+                    <button class="btn btn-sm btn-danger" title="Supprimer">
+                      <i class="fas fa-trash-alt fa-sm"></i>
+                    </button>
+                </td>
+              </tr>
+
+            </ng-container>
+
+            <ng-template #emptyState>
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">
+                  Aucune boutique trouvée
+                </td>
+              </tr>
+            </ng-template>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

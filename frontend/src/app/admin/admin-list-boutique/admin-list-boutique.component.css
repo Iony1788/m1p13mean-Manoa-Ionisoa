@@ -1,0 +1,33 @@
+.btn i {
+  font-size: 0.8rem; /* plus petit que la taille normale */
+}
+
+/* Réduit la taille de la table et du texte */
+.table {
+  font-size: 0.85rem; /* police plus petite */
+}
+
+.table th, .table td {
+  padding: 0.35rem 0.5rem; /* réduit le padding */
+}
+
+.table thead th {
+  font-size: 0.9rem; /* entêtes légèrement plus grandes que les cellules */
+}
+
+/* Boutons plus petits */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Badge plus petit */
+.card-header .badge {
+  font-size: 0.75rem;
+  padding: 0.25em 0.4em;
+}
+
+/* Pagination centrée et compacte */
+.d-flex.justify-content-between.mt-2 {
+  font-size: 0.85rem;
+}

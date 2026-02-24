@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
   prenom: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['acheteur', 'boutique'], default: 'acheteur' },
+
+  role: { 
+    type: String, 
+    enum: ['acheteur', 'boutique', 'admin'], 
+    default: 'acheteur' 
+  },
+
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
