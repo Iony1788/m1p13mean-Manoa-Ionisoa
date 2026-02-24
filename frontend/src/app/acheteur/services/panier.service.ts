@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service'; // 🔹 injecter AuthService
-import { environment } from '../../../environment/environment.prod';
+import { environment } from '../../../environment/environment';
 
 
 @Injectable({
@@ -20,19 +20,6 @@ export class PanierService {
   total$ = this.totalSubject.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) {} 
-
-  // Fonction pour récupérer le token et créer les headers
-  private createAuthHeaders(): HttpHeaders {
-    const token = this.authService.getToken(); 
-    console.log('Token envoyé dans headers:', token);
-    if (!token) {
-      throw new Error('Token non trouvé. L’utilisateur doit être connecté.');
-    }
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-  }
 
   // Ajouter un produit au panier
   addCartProduit(produitId: string, quantite: number): Observable<any> {

@@ -1,39 +1,49 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// panier.component.ts
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PanierService } from '../services/panier.service';
+import { CommonModule } from '@angular/common';
+
+interface PanierItem {
+  nom_produit?: string;
+  nom?: string;
+  quantite: number;
+  prix: number;
+}
 
 @Component({
   selector: 'app-panier',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './panier.component.html',
-  styleUrls: ['./panier.component.css']
+  styleUrls: ['./panier.component.css'],
+  imports: [CommonModule]
 })
 export class PanierComponent implements OnInit {
 
-  selectedProduct: any;
-  quantity: number = 1;
-  panier: any = null;
+  panier: PanierItem[] = [];
+  total: number = 0;
 
-  constructor(private panierService: PanierService) { }
+  constructor(private panierService: PanierService, private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.loadCart(); // on appelle la fonction ici
+    this.loadCart();
   }
 
-  // Fonction pour récupérer le panier
   loadCart(): void {
     this.panierService.getCartProduits().subscribe({
       next: (res) => {
-        this.panier = res.data;
+        this.panier = Array.isArray(res.data) ? res.data : [];
+        this.total = this.getTotal();
+        this.cd.detectChanges();
         console.log('Panier récupéré:', this.panier);
       },
       error: (err) => {
         console.error('Erreur récupération panier:', err);
+        this.panier = [];
       }
     });
   }
 
-  
-
+  getTotal(): number {
+    if (!Array.isArray(this.panier) || this.panier.length === 0) return 0;
+    return this.panier.reduce((sum, item) => sum + (item.prix || 0) * (item.quantite || 0), 0);
+  }
 }

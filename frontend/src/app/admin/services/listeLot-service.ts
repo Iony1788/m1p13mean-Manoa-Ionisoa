@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Lot } from './lotModel';
-
+import { environment } from '../../../environment/environment';
 
 export interface Boutique {
   _id: string;
@@ -19,8 +19,8 @@ export interface Boutique {
 })
 export class LotService {
 
-  private apiUrl = 'http://localhost:5000/api/lot';
-  private apiUrlRemote = 'https://m1p13mean-manoa-ionisoa.onrender.com/api/lot';
+  private endpoint =  '/lot';
+  private apiUrl = environment.apiUrl+this.endpoint;
 
    constructor(private http: HttpClient) {}
 

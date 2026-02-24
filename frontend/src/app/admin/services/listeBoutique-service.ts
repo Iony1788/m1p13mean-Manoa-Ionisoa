@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 export interface Boutique {
   _id: string;
@@ -17,8 +18,8 @@ export interface Boutique {
 })
 export class BoutiqueService {
 
-  private apiUrl = 'http://localhost:5000/api/boutiques';
-  private apiUrlRemote = 'https://m1p13mean-manoa-ionisoa.onrender.com/api/boutiques';
+  private endpoint =  '/boutiques';
+  private apiUrl = environment.apiUrl+this.endpoint;
 
    constructor(private http: HttpClient) {}
 

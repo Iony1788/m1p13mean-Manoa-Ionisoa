@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5000/api/auth'; 
-  private apiUrlRemote = 'https://m1p13mean-manoa-ionisoa.onrender.com/api/auth';
+    private endpoint =  '/auth';
+    private apiUrl = environment.apiUrl+this.endpoint;
 
   constructor(private http: HttpClient) {}
 

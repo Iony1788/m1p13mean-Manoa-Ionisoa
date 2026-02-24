@@ -18,11 +18,6 @@
           Shop
         </a>
       </li>
-      <li>
-        <button routerLink="/login" routerLinkActive="active" class="nav-btn">
-          Login
-        </button>
-      </li>
     </ul>
 
     <!-- Nav icons -->
@@ -30,18 +25,14 @@
       <div class="cart-icon">
         <i class="fas fa-shopping-cart" routerLink="/panier" routerLinkActive="active"></i>
         <span class="cart-count">{{ cartTotal }}</span>
-      </div>panier
-
-      <button class="theme-toggle-btn" aria-label="Toggle Theme">
-        <i class="fas fa-sun"></i>
-        <i class="fas fa-moon"></i>
-      </button>
-
-      <button class="menu-toggle" aria-label="Toggle Menu">
-        <i class="fas fa-bars"></i>
-      </button>
+      </div>
     </div>
     <!-- Fin nav-icons -->
+
+    <button routerLink="/login" routerLinkActive="active" class="nav-btn">
+      Login
+    </button>
+    
     
   </nav>
 </header>

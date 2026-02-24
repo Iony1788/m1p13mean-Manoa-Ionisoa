@@ -16,7 +16,7 @@ export class AdminListBoutiqueComponent implements OnInit {
 
   constructor(
     private boutiqueService: BoutiqueService,
-    private cd: ChangeDetectorRef // 🔹 injecte ChangeDetectorRef
+    private cd: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class AdminListBoutiqueComponent implements OnInit {
         console.log("IS ARRAY:", Array.isArray(data));
         this.boutiques = data;
 
-        this.cd.detectChanges(); // 🔥 force Angular à mettre à jour la vue
+        this.cd.detectChanges(); 
       },
       error: (err) => {
         console.error('Erreur complète:', err);

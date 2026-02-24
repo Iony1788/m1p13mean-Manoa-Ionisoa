@@ -16,7 +16,7 @@ h4 {
 .admin-sidebar {
   width: 250px;
   height: 100vh;
-  background: linear-gradient(180deg, #172b68, #172b68);
+  background: linear-gradient(180deg, hsl(224, 64%, 15%), #172b68);
   padding: 20px;
   color: white;
 }
