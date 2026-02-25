@@ -3,3 +3,38 @@
     gap: 15px;
     margin-top: 10px;
 }
+
+/* Conteneur icône panier */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Icône panier */
+.cart-icon i {
+  font-size: 1.6rem;
+  color: #333;
+  transition: 0.3s ease;
+}
+
+.cart-icon i:hover {
+  color: #0d6efd; /* bleu bootstrap */
+  transform: scale(1.1);
+}
+
+/* Badge compteur */
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 20px;
+  height: 20px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

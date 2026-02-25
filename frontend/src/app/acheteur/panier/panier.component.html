@@ -1,37 +1,61 @@
-<!-- panier.component.html -->
-<div class="container mt-4">
-  <h3 class="mb-4">Mon Panier</h3>
+<div class="container mt-5">
+  <h3 class="mb-4 d-flex justify-content-between align-items-center">
+    Mon Panier
+    <!-- Bouton Valider et Payer -->
+    <button class="btn btn-success" (click)="validerCommande()">
+      <i class="bi bi-credit-card"></i> Valider et Payer
+    </button>
+  </h3>
 
-  <div *ngIf="panier && panier.length > 0; else emptyCart">
-    <table class="table table-striped table-bordered">
-      <thead class="table-dark">
+  <!-- Panier vide -->
+  <div *ngIf="produits.length === 0" class="alert alert-warning">
+    Panier vide
+  </div>
+
+  <!-- Tableau des produits -->
+  <div *ngIf="produits.length > 0" class="table-responsive">
+    <table class="table table-bordered align-middle text-center">
+      <thead class="table-light">
         <tr>
-          <th>Produit</th>
-          <th>Quantité</th>
-          <th>Prix Unitaire</th>
-          <th>Total</th>
+          <th scope="col">Image</th>
+          <th scope="col">Produit</th>
+          <th scope="col">Prix (Rs)</th>
+          <th scope="col">Quantité</th>
+          <th scope="col">Total (Rs)</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of panier">
-          <td>{{ item.nom_produit || item.nom }}</td>
-          <td>{{ item.quantite }}</td>
-          <td>{{ item.prix | currency:'EUR' }}</td>
-          <td>{{ (item.prix * item.quantite) | currency:'EUR' }}</td>
+        <tr *ngFor="let produit of produits; let i = index">
+          <td>
+            <img *ngIf="produit.image" [src]="getImageUrl(produit.image)" [alt]="produit.nom" 
+                 style="max-height: 80px; width: auto; object-fit: cover; border-radius: 4px;">
+          </td>
+          <td>{{ produit.nom }}</td>
+          <td>{{ produit.prix }}</td>
+          <td>
+            <div class="d-flex justify-content-center align-items-center">
+              <!-- Bouton moins -->
+              <button class="btn btn-sm btn-outline-secondary me-1" (click)="decreaseQuantity(produit)">
+                <i class="bi bi-dash icon-yellow"></i>
+              </button>
+
+              <span class="mx-2">{{ produit.quantite }}</span>
+
+              <!-- Bouton plus -->
+              <button class="btn btn-sm btn-outline-secondary ms-1" (click)="increaseQuantity(produit)">
+                <i class="bi bi-plus icon-yellow"></i>
+              </button>
+            </div>
+          </td>
+          <td>{{ produit.prix * produit.quantite }}</td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="3" class="text-end">Total Général :</th>
-          <th>{{ total | currency:'EUR' }}</th>
-        </tr>
-      </tfoot>
     </table>
   </div>
 
-  <ng-template #emptyCart>
-    <div class="alert alert-info">
-      Votre panier est vide.
-    </div>
-  </ng-template>
+  <!-- Totaux -->
+  <div class="mt-4 p-3 border rounded bg-light d-flex justify-content-between">
+    <h5>Total Quantité: <span class="badge bg-primary">{{ totalQuantity }}</span></h5>
+    <h5>Total Prix: <span class="badge bg-success">{{ totalPrice }} Rs</span></h5>
+  </div>
 </div>

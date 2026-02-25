@@ -1,49 +1,66 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service'; // 🔹 injecter AuthService
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class PanierService {
 
-  private endpoint =  '/panier';
-  private apiUrl = environment.apiUrl+this.endpoint;
+  private endpoint = '/panier';
+  private apiUrl = environment.apiUrl + this.endpoint;
 
- 
+  // Produits du panier
+  private panierSubject = new BehaviorSubject<any[]>([]);
+  panier$ = this.panierSubject.asObservable();
 
-  private totalSubject = new BehaviorSubject<number>(0);
-  total$ = this.totalSubject.asObservable();
+  // Totaux
+  private totalQuantitySubject = new BehaviorSubject<number>(0);
+  totalQuantity$ = this.totalQuantitySubject.asObservable();
 
-  constructor(private http: HttpClient, private authService: AuthService) {} 
+  private totalPriceSubject = new BehaviorSubject<number>(0);
+  totalPrice$ = this.totalPriceSubject.asObservable();
 
-  // Ajouter un produit au panier
+  constructor(private http: HttpClient) {}
+
+  // Ajouter un produit
   addCartProduit(produitId: string, quantite: number): Observable<any> {
-
-    console.log(`URRlllllllllllllllllllll ${this.apiUrl}`);
-    return this.http.post(`${this.apiUrl}/${produitId}/addCart`, { quantite })
-      .pipe(
-        catchError(err => {
-          console.error('Erreur ajout au panier:', err);
-          return throwError(() => err);
-        })
-      );
+    return this.http.post(`${this.apiUrl}/${produitId}/addCart`, { quantite }, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      })
+    }).pipe(
+      tap(() => this.loadPanier()), // recharge le panier après ajout
+      catchError(err => throwError(() => err))
+    );
   }
 
-  // Récupérer le panier de l'utilisateur
-  getCartProduits(): Observable<any> {
-   
+  // Charger le panier
+  loadPanier(): void {
+    this.http.get<any>(`${this.apiUrl}/listePanier`, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      })
+    }).subscribe({
+      next: (res) => {
+        const produits = res.data.produits || [];
+        this.panierSubject.next(produits);
 
-    return this.http.get(`${this.apiUrl}/listePanier`)
-      .pipe(
-        catchError(err => {
-          console.error('Erreur récupération panier:', err);
-          return throwError(() => err);
-        })
-      );
+        // calcul des totaux
+        const totalQuantity = produits.reduce((sum: number, produit: any) => sum + (Number(produit.quantite) || 0), 0);
+        const totalPrice = produits.reduce((sum: number, produit: any) => sum + ((Number(produit.prix) || 0) * (Number(produit.quantite) || 0)), 0);
+
+        this.totalQuantitySubject.next(totalQuantity);
+        this.totalPriceSubject.next(totalPrice);
+      },
+      error: (err) => {
+        console.error('Erreur récupération panier', err);
+        this.panierSubject.next([]);
+        this.totalQuantitySubject.next(0);
+        this.totalPriceSubject.next(0);
+      }
+    });
   }
 }

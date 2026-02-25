@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Produit, ProduitsService } from '../services/produits-service';
 import { PanierService } from '../services/panier.service';
-
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -18,9 +18,10 @@ export class ProduitsComponent implements OnInit {
   produits: Produit[] = [];
   selectedProduct: Produit | null = null;
   quantity: number = 1;
-  userId: string = 'user123'; // peut être dynamique
+  userId: string = 'user123'; 
   showPopup: boolean = false;
   popupMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private produitsService: ProduitsService,
@@ -29,14 +30,20 @@ export class ProduitsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.produitsService.getProduits().subscribe({
-      next: (data) => {
-        this.produits = data || [];
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error('Erreur API :', err)
-    });
-  }
+  this.isLoading = true; // 🔵 démarre le loader
+
+  this.produitsService.getProduits().subscribe({
+    next: (data) => {
+      this.produits = data || [];
+      this.isLoading = false; // 🔵 stop loader
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('Erreur API :', err);
+      this.isLoading = false; // 🔵 stop même si erreur
+    }
+  });
+}
 
   getImageUrl(image: string): string {
     if (!image) return 'https://via.placeholder.com/200';
@@ -65,17 +72,31 @@ export class ProduitsComponent implements OnInit {
     if (product.quantity < 1) product.quantity = 1;
   }
 
-    // Fonction pour ajouter un produit au panier
     addToCart(produit: any, quantite: number) {
-      this.panierService.addCartProduit(produit._id, quantite).subscribe({
-        next: (res) => {
-          console.log('Produit ajouté:', res);
-          alert('Produit ajouté au panier !');
-        },
-        error: (err) => {
-          console.error('Erreur ajout panier:', err);
-          alert('Erreur lors de l’ajout au panier');
-        }
-      });
-    }
+    this.panierService.addCartProduit(produit._id, quantite).subscribe({
+      next: (res) => {
+        console.log('Produit ajouté:', res);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Produit ajouté au panier !',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+      },
+      error: (err) => {
+        console.error('Erreur ajout panier:', err);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de l’ajout au panier',
+          confirmButtonColor: '#d33'
+        });
+
+      }
+  });
+}
 }

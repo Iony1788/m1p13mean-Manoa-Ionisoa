@@ -46,3 +46,24 @@
   color: #b12600; /* couleur du texte uniquement */
   text-decoration: none; /* optionnel : enlever le soulignement */
 }
+
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: #0d6efd;
+}
+
+.loader-icon {
+  font-size: 3rem;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

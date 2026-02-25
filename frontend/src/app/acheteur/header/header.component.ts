@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PanierService } from '../services/panier.service';
 
-
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -10,13 +9,15 @@ import { PanierService } from '../services/panier.service';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
-  cartTotal: number = 0;
+  cartTotal: number = 0; 
 
   constructor(private panierService: PanierService) {}
 
-  ngOnInit() {
-    this.panierService.total$.subscribe(total => {
+  ngOnInit(): void {
+    this.panierService.totalQuantity$.subscribe(total => {
       this.cartTotal = total;
     });
+
+    this.panierService.loadPanier();
   }
 }
