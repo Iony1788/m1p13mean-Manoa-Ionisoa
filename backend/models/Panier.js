@@ -34,13 +34,11 @@ const panierSchema = new mongoose.Schema({
     required: true
   },
 
-  // référence simple (optionnelle si tu utilises snapshot)
   produits: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Produit'
   }],
 
-  // snapshot sécurisé (recommandé)
   produitsSnapshot: [produitSnapshotSchema],
 
   dateValidation: {
@@ -48,7 +46,7 @@ const panierSchema = new mongoose.Schema({
   }
 
 }, {
-  timestamps: true // crée automatiquement createdAt et updatedAt
+  timestamps: true 
 });
 
 module.exports = mongoose.model('Panier', panierSchema);

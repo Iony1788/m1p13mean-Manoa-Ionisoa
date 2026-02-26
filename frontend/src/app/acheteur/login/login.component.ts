@@ -10,18 +10,16 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.css'],
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [FormsModule, RouterLink,CommonModule]
+  imports: [FormsModule, RouterLink, CommonModule]
 })
 export class LoginComponent {
-
-  email = '';
-  password = '';
-  message = ''; // message inline si tu veux l'utiliser
+  email = 'test@example.com';
+  password = '1234';
+  message = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
-    // Vérification des champs vides
     if (!this.email || !this.password) {
       Swal.fire({
         icon: 'warning',
@@ -42,7 +40,8 @@ export class LoginComponent {
           return;
         }
 
-        this.authService.saveToken(res.token);
+        // 🔹 sauvegarde du rôle pour sidebar et autres
+        this.authService.saveRole(res.role);
 
         Swal.fire({
           icon: 'success',
@@ -50,17 +49,20 @@ export class LoginComponent {
           showConfirmButton: false,
           timer: 1500
         }).then(() => {
-          this.router.navigate(['/']);
+          // Redirection selon rôle
+          if (res.role === 'admin') {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (res.role === 'boutique') {
+            this.router.navigate(['/admin/dashboardBoutique']); 
+          } else {
+            this.router.navigate(['/']); 
+          }
         });
       },
       error: (err) => {
-        // Récupérer le message pour SweetAlert2
         const errMsg = err.error?.message || 'Impossible de se connecter';
-
-        // Message inline si tu veux l'afficher dans le template
         this.message = errMsg;
 
-        // Affichage pop-up
         Swal.fire({
           icon: 'error',
           title: 'Échec de la connexion',

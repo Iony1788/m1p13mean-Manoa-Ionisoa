@@ -41,6 +41,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     });
   }
+  
 
   loadClientStats() {
   this.lotService.getClientStats().subscribe({

@@ -13,8 +13,8 @@ import { AuthService } from '../../acheteur/services/auth.service';
 })
 export class LoginAdminComponent {
 
-  email: string = '';   
-  password: string = '';   
+  email: string = 'admin@example.com';   
+  password: string = '123456';   
   message: string = '';    
 
   constructor(

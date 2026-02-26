@@ -55,14 +55,7 @@
       "dateValidation": { "type": "Date" },
       "updatedAt": { "type": "Date", "default": "Date.now" }
     },
-    "Commande": {
-      "panier": { "type": "ObjectId", "ref": "Panier", "required": true },
-      "statut": { "type": "Number", "enum": [0, 1, 2], "required": true },
-      "modeLivraison": { "type": "Number", "enum": [0, 1], "required": true },
-      "dateAchat": { "type": "Date", "default": "Date.now" },
-      "produitsSnapshot": [{ "type": "Mixed" }],
-      "updatedAt": { "type": "Date", "default": "Date.now" }
-    },
+   
     "Notification": {
       "notification": { "type": "String", "required": true },
       "id_boutique": { "type": "ObjectId", "ref": "BoutiqueProfile" },

@@ -1,3 +1,44 @@
-<p>
-  boutique-list-produit works!
-</p>
+<div class="container mt-4">
+
+  <h3 class="mb-4">Produits de la boutique</h3>
+
+  <!-- Bouton Ajouter avec icône + -->
+  <button class="btn btn-success mb-3" (click)="onAddProduit()">
+    <i class="bi bi-plus-lg"></i> Ajouter
+  </button>
+
+  <table class="table table-bordered table-hover table-striped align-middle" *ngIf="produits.length > 0">
+    <thead class="table-dark">
+      <tr>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Boutique</th>
+        <th>Catégorie</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let produit of produits">
+        <td>{{ produit.nom }}</td>
+        <td>{{ produit.prix | currency:'AR' }}</td>
+        <td>{{ produit.id_boutique.nom }}</td>
+        <td>{{ produit.idCategorie.nom }}</td>
+        <td class="text-center">
+    
+          <button class="btn btn-primary btn-sm me-2" title="Modifier" (click)="onEditProduit(produit)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+
+          <button class="btn btn-outline-danger btn-sm" (click)="onDeleteProduit(produit)">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && produits.length === 0" class="alert alert-warning">
+    Aucun produit trouvé pour cette boutique.
+  </div>
+
+</div>

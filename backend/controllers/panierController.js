@@ -8,33 +8,54 @@ export const addCartProduit = async (req, res) => {
     const { quantite } = req.body;
 
     const produit = await Produit.findById(id_produit);
-    if (!produit) return res.status(404).json({ message: "Produit non trouvé" });
-
-    const produitSnapshot = {
-      produitId: produit._id,
-      nom: produit.nom,
-      prix: produit.prix,
-      image: produit.image || "",
-      quantite: quantite || 1,
-      subtotal: (quantite || 1) * produit.prix
-    };
+    if (!produit) {
+      return res.status(404).json({ message: "Produit non trouvé" });
+    }
 
     let panier = await Panier.findOne({ acheteurProfile: id_user });
 
+    const quantityToAdd = quantite || 1;
+
     if (!panier) {
+    
       panier = new Panier({
         acheteurProfile: id_user,
-        produitsSnapshot: [produitSnapshot]
+        produitsSnapshot: [{
+          produitId: produit._id,
+          nom: produit.nom,
+          prix: produit.prix,
+          image: produit.image || "",
+          quantite: quantityToAdd,
+          subtotal: quantityToAdd * produit.prix
+        }]
       });
+
     } else {
-      panier.produitsSnapshot.push(produitSnapshot);
+
+      const produitExistant = panier.produitsSnapshot.find(
+        p => p.produitId.toString() === id_produit.toString()
+      );
+
+      if (produitExistant) {
+        produitExistant.quantite += quantityToAdd;
+        produitExistant.subtotal = produitExistant.quantite * produitExistant.prix;
+      } else {
+        panier.produitsSnapshot.push({
+          produitId: produit._id,
+          nom: produit.nom,
+          prix: produit.prix,
+          image: produit.image || "",
+          quantite: quantityToAdd,
+          subtotal: quantityToAdd * produit.prix
+        });
+      }
     }
 
     await panier.save();
 
     res.status(200).json({
       success: true,
-      message: 'Produit ajouté au panier avec succès',
+      message: "Produit ajouté ou mis à jour avec succès",
       data: panier
     });
 
@@ -42,7 +63,7 @@ export const addCartProduit = async (req, res) => {
     console.error(err);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur',
+      message: "Erreur serveur",
       error: err.message
     });
   }

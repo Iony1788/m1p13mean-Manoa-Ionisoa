@@ -11,6 +11,7 @@ export class PanierService {
 
   private endpoint = '/panier';
   private apiUrl = environment.apiUrl + this.endpoint;
+  
 
   // Produits du panier
   private panierSubject = new BehaviorSubject<any[]>([]);
@@ -63,4 +64,6 @@ export class PanierService {
       }
     });
   }
+
+ 
 }

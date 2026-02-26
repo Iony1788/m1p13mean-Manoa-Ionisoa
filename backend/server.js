@@ -8,6 +8,7 @@ const produitRoutes = require('./routes/produitRoutes');
 const panierRoutes = require('./routes/panierRoutes');
 const boutiqueRoutes = require('./routes/boutiqueRoutes');
 const lotRoutes = require('./routes/lotRoutes');
+const commandeRoutes = require('./routes/commandeRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -57,6 +58,7 @@ app.use('/api/produits', produitRoutes);
 app.use('/api/panier', panierRoutes);
 app.use('/api/boutiques', boutiqueRoutes);
 app.use('/api/lot', lotRoutes);
+app.use('/api/commandes', commandeRoutes);
 
 // ------------------ GESTION GLOBALE DES ERREURS ------------------
 app.use((err, req, res, next) => {

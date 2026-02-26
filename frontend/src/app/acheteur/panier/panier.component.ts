@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PanierService } from '../services/panier.service';
 import { CommonModule } from '@angular/common';
+import { CommandeService } from '../services/commande.service';
 
 @Component({
   selector: 'app-panier',
@@ -14,7 +15,7 @@ export class PanierComponent implements OnInit {
   totalQuantity: number = 0;
   private backendUrl = 'https://m1p13mean-manoa-ionisoa.onrender.com';
 
-  constructor(private panierService: PanierService) {}
+  constructor(private panierService: PanierService,private commandeService: CommandeService) {}
 
   ngOnInit(): void {
     // s'abonner aux changements du panier
@@ -53,11 +54,15 @@ export class PanierComponent implements OnInit {
     this.totalPrice = this.produits.reduce((sum, p) => sum + ((Number(p.prix) || 0) * (Number(p.quantite) || 0)), 0);
   }
 
-  // 🔹 Bouton Valider et Payer
   validerCommande() {
-    console.log('Commande validée !', this.produits);
-    alert(`Commande validée ! Total: ${this.totalPrice} Rs`);
-    // Ici tu peux appeler ton backend pour créer la commande
-    // this.panierService.validerCommande(this.produits).subscribe();
-  }
+  this.commandeService.validerCommande().subscribe({
+    next: (res: any) => {
+      alert("Commande validée avec succès !");
+    },
+    error: (err: any) => {
+      console.error(err);
+      alert("Erreur lors de la validation");
+    }
+  });
+}
 }

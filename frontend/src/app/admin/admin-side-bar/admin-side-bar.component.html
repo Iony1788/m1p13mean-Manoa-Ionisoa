@@ -8,47 +8,53 @@
   <ul class="nav flex-column">
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'admin'" routerLink="/admin/dashboard" routerLinkActive="active">
+        Dashboard
+      </a>
+    </li>
+
+     <li class="nav-item">
+      <a class="nav-link" *ngIf="role === 'boutique'" routerLink="/admin/dashboardBoutique" routerLinkActive="active">
         Dashboard
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/list-boutique" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'admin'" routerLink="/admin/list-boutique" routerLinkActive="active">
         List Boutique
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/list-produit" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'boutique'" routerLink="/admin/list-produit" routerLinkActive="active">
         List Produit
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/list-commande" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'boutique'" routerLink="/admin/list-commande" routerLinkActive="active">
         List Commande
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/list-lot" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'admin'" routerLink="/admin/list-lot" routerLinkActive="active">
         List Lot
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/boutique-info" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'boutique'" routerLink="/admin/boutique-info" routerLinkActive="active">
         Information Boutique
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" routerLink="/admin/ajout-promotion" routerLinkActive="active">
+      <a class="nav-link" *ngIf="role === 'boutique'" routerLink="/admin/ajout-promotion" routerLinkActive="active">
         Ajout Promotion
       </a>
     </li>
-    <button class="btn btn-danger mt-4">
+    <button class="btn btn-danger mt-4" (click)="logout()">
       <i class="fas fa-sign-out-alt me-2"></i> Logout
     </button>
   </ul>
