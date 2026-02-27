@@ -27,3 +27,79 @@
 .d-flex.justify-content-between.mt-2 {
   font-size: 0.85rem;
 }
+
+
+
+
+/* Overlay */
+.modal {
+  position: fixed;
+  top: 5%;               /* 🔹 plus haut */
+  left: 0;
+  width: 100%;
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 🔹 aligne en haut */
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+/* Contenu modal plus petit */
+.modal-content {
+  background: #fff;
+  width: 400px;          /* 🔹 largeur réduite */
+  padding: 15px;         /* 🔹 moins d'espace interne */
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Titre plus compact */
+.modal-content h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Inputs plus petits */
+.modal-content .form-control {
+  font-size: 13px;
+  padding: 5px 8px;
+}
+
+/* Textarea plus petit */
+.modal-content textarea {
+  height: 60px;
+  resize: none;
+}
+
+/* Espacement réduit */
+.mb-2 {
+  margin-bottom: 8px !important;
+}
+
+/* Boutons alignés */
+.modal-content button {
+  font-size: 13px;
+  padding: 6px 10px;
+  margin-right: 5px;
+}
+
+/* Boutons sur la même ligne */
+.modal-content .btn {
+  display: inline-block;
+}
+
+/* Boutons container */
+.modal-content .btn-success,
+.modal-content .btn-secondary {
+  width: 48%;
+}
+
+/* Bouton fermer */
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}

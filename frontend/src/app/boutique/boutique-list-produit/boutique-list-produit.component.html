@@ -1,44 +1,86 @@
 <div class="container mt-4">
+  <h2 class="mb-4">Liste des Produits</h2>
 
-  <h3 class="mb-4">Produits de la boutique</h3>
+  <div class="card shadow-lg border-0">
 
-  <!-- Bouton Ajouter avec icône + -->
-  <button class="btn btn-success mb-3" (click)="onAddProduit()">
-    <i class="bi bi-plus-lg"></i> Ajouter
-  </button>
+    <!-- Header -->
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Produits de la boutique</h4>
+      <span class="badge bg-light text-dark">
+        {{ produits.length }} Produit(s)
+      </span>
+      <button class="btn btn-sm btn-light text-success ms-3" (click)="ajouterProduit()" title="Ajouter">
+        <i class="bi bi-plus-circle me-1"></i> Ajouter
+      </button>
+    </div>
 
-  <table class="table table-bordered table-hover table-striped align-middle" *ngIf="produits.length > 0">
-    <thead class="table-dark">
-      <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-        <th>Boutique</th>
-        <th>Catégorie</th>
-        <th class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let produit of produits">
-        <td>{{ produit.nom }}</td>
-        <td>{{ produit.prix | currency:'AR' }}</td>
-        <td>{{ produit.id_boutique.nom }}</td>
-        <td>{{ produit.idCategorie.nom }}</td>
-        <td class="text-center">
-    
-          <button class="btn btn-primary btn-sm me-2" title="Modifier" (click)="onEditProduit(produit)">
-            <i class="bi bi-pencil-square"></i>
-          </button>
+    <div class="card-body">
+      <div class="table-responsive">
 
-          <button class="btn btn-outline-danger btn-sm" (click)="onDeleteProduit(produit)">
-            Supprimer
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <table class="table table-hover table-sm align-middle">
 
-  <div *ngIf="!loading && produits.length === 0" class="alert alert-warning">
-    Aucun produit trouvé pour cette boutique.
+          <thead class="table-success">
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Boutique</th>
+              <th>Catégorie</th>
+              <th>Quantité</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngIf="produits.length > 0; else emptyState">
+
+              <tr *ngFor="let produit of produits; let i = index">
+                <td>{{ i + 1 }}</td>
+
+                <td class="text-center">
+                  <img *ngIf="produit.image"
+                       [src]="getImageUrl(produit.image)"
+                       [alt]="produit.nom"
+                       width="50"
+                       height="50"
+                       class="rounded">
+                </td>
+
+                <td class="fw-semibold">{{ produit.nom }}</td>
+                <td class="text-success fw-bold">{{ produit.prix | currency:'MGA' }}</td>
+                <td>{{ produit.id_boutique?.nom || '-' }}</td>
+                <td>{{ produit.idCategorie?.nom || '-' }}</td>
+                <td>
+                  <span class="badge bg-primary">{{ produit.quantiteStock }}</span>
+                </td>
+
+                <td class="text-center">
+                  <button class="btn btn-sm btn-primary me-2" title="Modifier" (click)="modifierProduit(produit)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" title="Supprimer" (click)="supprimerProduit(produit)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+
+            </ng-container>
+
+            <ng-template #emptyState>
+              <tr>
+                <td colspan="8" class="text-center text-muted py-4">
+                  Aucun produit trouvé
+                </td>
+              </tr>
+            </ng-template>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
   </div>
-
 </div>

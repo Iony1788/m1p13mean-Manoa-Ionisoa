@@ -1,4 +1,6 @@
 export interface Produit {
+image: any;
+quantiteStock: any;
   _id: string;
   nom: string;
   prix: number;

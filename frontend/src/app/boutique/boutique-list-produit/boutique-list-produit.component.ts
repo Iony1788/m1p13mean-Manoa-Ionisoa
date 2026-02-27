@@ -1,62 +1,93 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Produit } from '../services/produit.model';
+import { Boutique } from '../services/boutique.model';
 import { BoutiqueService } from '../services/boutique-service';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-boutique-list-produit',
   templateUrl: './boutique-list-produit.component.html',
-  styleUrls: ['./boutique-list-produit.component.css'],
-  imports: [CommonModule]
-  
+  imports: [ReactiveFormsModule, CommonModule],
+  styleUrls: ['./boutique-list-produit.component.css']
 })
 export class BoutiqueListProduitComponent implements OnInit {
 
   produits: Produit[] = [];
-  boutiqueId!: string;
-  loading: boolean = false;
+  boutiqueConnectee: Boutique | null = null;
   errorMessage: string = '';
+  loading: boolean = false;
+  quantiteStock: number = 0;
+  backendUrl = 'https://m1p13mean-manoa-ionisoa.onrender.com';
 
   constructor(
-    private route: ActivatedRoute,
-    private boutiqueService: BoutiqueService
+    private boutiqueService: BoutiqueService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.boutiqueId = this.route.snapshot.paramMap.get('id')!;
-    this.loadProduits();
+    this.loadBoutiqueEtProduits();
   }
 
-  loadProduits() {
+  loadBoutiqueEtProduits() {
     this.loading = true;
-    
-    this.boutiqueService.getProduitsByBoutique(this.boutiqueId)
-      .subscribe({
-        next: (data) => {
-          this.produits = data;
+    this.errorMessage = '';
+
+    this.boutiqueService.getBoutiqueConnectee().subscribe({
+      next: (boutique) => {
+        if (!boutique || !boutique._id) {
+          this.errorMessage = "Aucune boutique associée à cet utilisateur.";
           this.loading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.errorMessage = "Impossible de charger les produits";
-          this.loading = false;
+          this.cd.detectChanges();
+          return;
         }
-      });
+
+        this.boutiqueConnectee = boutique;
+        this.cd.detectChanges();
+
+        this.boutiqueService.getProduitsByBoutique(boutique._id).subscribe({
+          next: (produits) => {
+            this.produits = produits;
+            this.loading = false;
+
+            if (produits.length === 0) {
+              this.errorMessage = "Vous n'avez encore aucun produit, ajoutez-en !";
+            }
+
+            this.cd.detectChanges(); 
+          },
+          error: (err) => {
+            console.error('Erreur produits:', err);
+            this.errorMessage = "Impossible de charger les produits";
+            this.loading = false;
+            this.cd.detectChanges();
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Erreur boutique:', err);
+        this.errorMessage = "Boutique non trouvée pour cet utilisateur";
+        this.loading = false;
+        this.cd.detectChanges();
+      }
+    });
   }
 
-  onAddProduit() {
-    // Rediriger vers une page ou ouvrir un modal pour ajouter un produit
+  getImageUrl(image: string): string {
+    if (!image) return 'https://via.placeholder.com/200';
+    return this.backendUrl + (image.startsWith('/') ? image : '/' + image);
+  }
+
+  
+  ajouterProduit() {
     console.log("Ajouter un produit");
   }
 
-  onEditProduit(produit: Produit) {
-    // Rediriger vers une page ou ouvrir un modal pour modifier le produit
-    console.log("Modifier le produit", produit);
+  modifierProduit(produit: Produit) {
+    console.log("Modifier produit :", produit);
   }
 
-  onDeleteProduit(produit: Produit) {
-    // Appeler le backend pour supprimer le produit
-    console.log("Supprimer / Destocker le produit", produit);
+  supprimerProduit(produit: Produit) {
+    console.log("Supprimer produit :", produit);
   }
 }

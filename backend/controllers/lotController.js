@@ -56,3 +56,66 @@ export const getAllLotsStats = async (req, res) => {
 };
 
 
+
+
+// Ajouter un lot
+export const ajouterLot = async (req, res) => {
+  try {
+    const { nom_lot, superficie, prix_location, niveau, etape, description, id_boutique } = req.body;
+
+    const nouveauLot = new Lot({
+      nom_lot,
+      superficie,
+      prix_location,
+      niveau,
+      etape,
+      description,
+      id_boutique
+    });
+
+    const savedLot = await nouveauLot.save();
+    res.status(201).json(savedLot);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de l\'ajout du lot', error });
+  }
+};
+
+// Modifier un lot
+export const modifierLot = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body; // les champs à modifier
+
+    const lotModifie = await Lot.findByIdAndUpdate(id, updates, { new: true });
+    if (!lotModifie) {
+      return res.status(404).json({ message: 'Lot non trouvé' });
+    }
+
+    res.status(200).json(lotModifie);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la modification du lot', error });
+  }
+};
+
+// Supprimer un lot
+export const supprimerLot = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const lotSupprime = await Lot.findByIdAndDelete(id);
+    if (!lotSupprime) {
+      return res.status(404).json({ message: 'Lot non trouvé' });
+    }
+
+    res.status(200).json({ message: 'Lot supprimé avec succès' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la suppression du lot', error });
+  }
+};
+
+
+
+

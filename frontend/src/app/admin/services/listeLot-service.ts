@@ -40,4 +40,16 @@ export class LotService {
   getClientStats() {
     return this.http.get<any>(`${this.apiUrl}/stats/client`);
   }
+
+  ajouterLot(lot: Lot): Observable<Lot> {
+    return this.http.post<Lot>(this.apiUrl, lot);
+  }
+
+  modifierLot(id: string, updates: Partial<Lot>): Observable<Lot> {
+    return this.http.put<Lot>(`${this.apiUrl}/${id}`, updates);
+  }
+
+  supprimerLot(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  }
 }
