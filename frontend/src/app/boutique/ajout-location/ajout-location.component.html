@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="card shadow-lg border-0">
+
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0">Lots disponibles</h4>
+    </div>
+     
+    <div class="card-body">
+      <div class="table-responsive">
+
+        <table class="table table-hover align-middle table-sm">
+
+          <thead class="table-success">
+            <tr>
+              <th>#</th>
+              <th>Nom du Lot</th>
+              <th>Superficie</th>
+              <th>Prix</th>
+              <th>Niveau</th>
+              <th>Description</th>
+              <th>Statut</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let lot of lots; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ lot.nom_lot }}</td>
+              <td>{{ lot.superficie || '-' }}</td>
+              <td>{{ lot.prix_location || 0 }} Ar</td>
+              <td>{{ lot.niveau || '-' }}</td>
+              <td>{{ lot.description || '-' }}</td>
+              <td>{{ lot.statut || '-' }}</td> 
+
+              <td class="text-center">
+                <button 
+                  class="btn btn-success btn-sm"
+                  (click)="louer(lot._id)">
+                  Louer
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="lots.length === 0">
+              <td colspan="8" class="text-center text-muted py-4">
+                Aucun lot libre disponible
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

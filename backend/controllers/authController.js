@@ -68,3 +68,13 @@ export const login = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 };
+
+
+export const logout = async (req, res) => {
+  try {
+    res.status(200).json({ message: 'Déconnecté avec succès' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
+  }
+};

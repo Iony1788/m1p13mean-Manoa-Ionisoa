@@ -4,7 +4,7 @@ export interface Lot {
   superficie?: number;
   prix_location?: number;
   niveau?: string;
-  etape?: string;
+  statut?: string;
   description?: string;
   date_creation?: string;
   date_modification?: string;

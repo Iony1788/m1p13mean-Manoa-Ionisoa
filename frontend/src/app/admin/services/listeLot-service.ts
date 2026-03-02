@@ -52,4 +52,19 @@ export class LotService {
   supprimerLot(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }
+
+
+  louerLot(idLot: string, idBoutique: string): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`
+  });
+
+    return this.http.post(`${this.apiUrl}/louer`, { idLot, idBoutique }, { headers });
+  }
+
+ 
+
+
 }

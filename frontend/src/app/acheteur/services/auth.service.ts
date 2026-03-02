@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { environment } from '../../../environment/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
   private roleSubject = new BehaviorSubject<string>(localStorage.getItem('role') || '');
   role$ = this.roleSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
   // LOGIN
   login(email: string, password: string): Observable<any> {
@@ -63,7 +64,17 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  logout() {
+
+   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.roleSubject.next(''); // mettre à jour le BehaviorSubject pour tous les abonnés
+
+    // Rediriger vers login
+    this.router.navigate(['/login']);
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

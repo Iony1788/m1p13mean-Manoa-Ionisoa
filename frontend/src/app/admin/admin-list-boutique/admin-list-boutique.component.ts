@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class AdminListBoutiqueComponent implements OnInit {
 
   boutiques: Boutique[] = []; 
+lot: any;
 
   constructor(
     private boutiqueService: BoutiqueService,
@@ -38,4 +39,6 @@ export class AdminListBoutiqueComponent implements OnInit {
       }
     });
   }
+
+
 }

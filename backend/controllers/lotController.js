@@ -1,5 +1,6 @@
 import Lot from '../models/Lot.js'; 
 import User from '../models/User.js'; 
+import Location from '../models/Location.js';
 
 export const getAllLots = async (req, res) => {
   try {
@@ -118,4 +119,32 @@ export const supprimerLot = async (req, res) => {
 
 
 
+export const louerLot = async (req, res) => {
+  try {
+    const { idLot, idBoutique } = req.body;
 
+    if (!idLot || !idBoutique) {
+      return res.status(400).json({ message: "idLot et idBoutique sont requis" });
+    }
+
+    const lot = await Lot.findById(idLot);
+    if (!lot) return res.status(404).json({ message: "Lot introuvable" });
+    if (lot.statut !== 'libre') return res.status(400).json({ message: "Lot déjà occupé" });
+
+    const location = await Location.create({
+      idLot,
+      idBoutique,
+      montant: lot.prix_location
+    });
+    console.log('Reçu body:', req.body);
+
+    lot.statut = 'occupe';
+    await lot.save();
+
+    res.status(201).json({ message: "Lot loué avec succès", location });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur", error: err.message });
+  }
+};

@@ -64,8 +64,8 @@ const seeder = async () => {
 
     // ------------------ Lots ------------------
     await Lot.insertMany([
-      { nom_lot: 'Lot A1', superficie: 50, prix_location: 800000, niveau: 'Rez-de-chaussée', etape: 'libre', description: 'Lot proche entrée principale', id_boutique: boutiques[0]._id },
-      { nom_lot: 'Lot B1', superficie: 60, prix_location: 950000, niveau: '1er étage', etape: 'libre', description: 'Lot avec grande vitrine', id_boutique: boutiques[1]._id }
+      { nom_lot: 'Lot A1', superficie: 50, prix_location: 800000, niveau: 'Rez-de-chaussée', description: 'Lot proche entrée principale', statut: 'libre'},
+      { nom_lot: 'Lot B1', superficie: 60, prix_location: 950000, niveau: '1er étage', description: 'Lot avec grande vitrine', statut: 'libre'}
     ]);
 
     // ------------------ Produits ------------------

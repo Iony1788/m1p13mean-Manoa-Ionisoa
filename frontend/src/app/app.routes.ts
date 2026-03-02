@@ -16,6 +16,7 @@ import { AjoutPromotionComponent } from './boutique/ajout-promotion/ajout-promot
 import { AdminListBoutiqueComponent } from './admin/admin-list-boutique/admin-list-boutique.component';
 import { AdminListLotComponent } from './admin/admin-list-lots/admin-list-lots.component';
 import { DashboardBoutiqueComponent } from './boutique/dashboard-boutique/dashboard-boutique.component';
+import { AjoutLocationComponent } from './boutique/ajout-location/ajout-location.component';
 
 export const routes: Routes = [
 
@@ -63,7 +64,9 @@ export const routes: Routes = [
 
       { path: 'ajout-promotion', component: AjoutPromotionComponent },
 
-      { path: 'dashboardBoutique', component: DashboardBoutiqueComponent }
+      { path: 'dashboardBoutique', component: DashboardBoutiqueComponent },
+
+      { path: 'ajout-location', component: AjoutLocationComponent }
       
     ]
   },

@@ -14,5 +14,7 @@ router.put('/:id', lotController.modifierLot);
 
 router.delete('/:id', lotController.supprimerLot);
 
+router.post('/louer', lotController.louerLot);
+
 module.exports = router;
 
