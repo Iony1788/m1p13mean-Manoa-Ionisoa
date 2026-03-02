@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/multerConfig');
-const produitController = require('../controllers/ProduitController');
+const produitController = require('../controllers/produitController');
 
 router.get('/categorie/:idCategorie', produitController.getListProduitWhitCategorie);
 router.get('/', produitController.getAllProduits);
