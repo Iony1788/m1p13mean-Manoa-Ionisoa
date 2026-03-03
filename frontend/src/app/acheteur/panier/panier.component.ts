@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PanierService } from '../services/panier.service';
 import { CommonModule } from '@angular/common';
 import { CommandeService } from '../services/commande.service';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-panier',
@@ -13,9 +14,12 @@ export class PanierComponent implements OnInit {
   produits: any[] = [];
   totalPrice: number = 0;
   totalQuantity: number = 0;
-  private backendUrl = 'https://m1p13mean-manoa-ionisoa.onrender.com';
+  private backendUrl = environment.imageUrl;
 
-  constructor(private panierService: PanierService,private commandeService: CommandeService) {}
+
+
+  constructor
+  (private panierService: PanierService, private commandeService: CommandeService,private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // s'abonner aux changements du panier
@@ -26,12 +30,12 @@ export class PanierComponent implements OnInit {
     // charger le panier une première fois
     this.panierService.loadPanier();
   }
-   getImageUrl(image: string): string {
+  getImageUrl(image: string): string {
     if (!image) return 'https://via.placeholder.com/200';
     return this.backendUrl + (image.startsWith('/') ? image : '/' + image);
   }
 
-    increaseQuantity(produit: any) {
+  increaseQuantity(produit: any) {
     produit.quantite = (produit.quantite || 0) + 1;
     this.calculateTotals();
     // Ici, tu peux aussi appeler ton backend pour mettre à jour la quantité
@@ -48,21 +52,24 @@ export class PanierComponent implements OnInit {
     }
   }
 
-    // 🔹 Calculer le total quantité et total prix
+  // 🔹 Calculer le total quantité et total prix
   calculateTotals() {
     this.totalQuantity = this.produits.reduce((sum, p) => sum + (Number(p.quantite) || 0), 0);
     this.totalPrice = this.produits.reduce((sum, p) => sum + ((Number(p.prix) || 0) * (Number(p.quantite) || 0)), 0);
   }
 
   validerCommande() {
-  this.commandeService.validerCommande().subscribe({
-    next: (res: any) => {
-      alert("Commande validée avec succès !");
-    },
-    error: (err: any) => {
-      console.error(err);
-      alert("Erreur lors de la validation");
-    }
-  });
-}
+    this.commandeService.validerCommande().subscribe({
+      next: (res: any) => {
+        this.produits = [];
+        this.panierService.loadPanier();
+        this.cdr.detectChanges();
+        alert("Commande validée avec succès !");
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert("Erreur lors de la validation");
+      }
+    });
+  }
 }

@@ -9,7 +9,7 @@
       <span class="badge bg-light text-dark">
         {{ produits.length }} Produit(s)
       </span>
-      <button class="btn btn-sm btn-light text-success ms-3" (click)="ajouterProduit()" title="Ajouter">
+      <button class="btn btn-sm btn-light text-success ms-3" (click)="openAddModal()" title="Ajouter">
         <i class="bi bi-plus-circle me-1"></i> Ajouter
       </button>
     </div>
@@ -24,7 +24,7 @@
               <th>#</th>
               <th>Image</th>
               <th>Nom</th>
-              <th>Prix</th>
+              <th style="text-align: center;">Prix</th>
               <th>Boutique</th>
               <th>Catégorie</th>
               <th>Quantité</th>
@@ -39,16 +39,12 @@
                 <td>{{ i + 1 }}</td>
 
                 <td class="text-center">
-                  <img *ngIf="produit.image"
-                       [src]="getImageUrl(produit.image)"
-                       [alt]="produit.nom"
-                       width="50"
-                       height="50"
-                       class="rounded">
+                  <img *ngIf="produit.image" [src]="getImageUrl(produit.image)" [alt]="produit.nom" width="50"
+                    height="50" class="rounded">
                 </td>
 
                 <td class="fw-semibold">{{ produit.nom }}</td>
-                <td class="text-success fw-bold">{{ produit.prix | currency:'MGA' }}</td>
+                <td class="text-success fw-bold" style="text-align: right;">{{ produit.prix | mgaCurrency }}</td>
                 <td>{{ produit.id_boutique?.nom || '-' }}</td>
                 <td>{{ produit.idCategorie?.nom || '-' }}</td>
                 <td>
@@ -56,12 +52,12 @@
                 </td>
 
                 <td class="text-center">
-                  <button class="btn btn-sm btn-primary me-2" title="Modifier" (click)="modifierProduit(produit)">
-                    <i class="bi bi-pencil-square"></i>
+                  <button class="btn btn-sm btn-primary me-2" title="Modifier" (click)="openEditModal(produit)">
+                    <i class="fas fa-edit fa-sm" ></i>
                   </button>
                   <button class="btn btn-sm btn-danger" title="Supprimer" (click)="supprimerProduit(produit)">
-                    <i class="bi bi-trash"></i>
-                  </button>
+                    <i class="fas fa-trash fa-sm" ></i>
+                  </button>                
                 </td>
               </tr>
 
@@ -80,6 +76,143 @@
         </table>
 
       </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MODAL AJOUT PRODUIT -->
+<div class="custom-modal" *ngIf="showAddModal">
+
+  <div class="custom-modal-content">
+
+    <!-- Header -->
+    <div class="custom-modal-header">
+      <h6>Ajouter un Produit</h6>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+
+    <!-- Body -->
+    <div class="custom-modal-body">
+
+      <!-- Nom -->
+      <div class="form-group mb-2">
+        <label>Nom</label>
+        <input type="text" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.nom">
+      </div>
+
+      <!-- Prix -->
+      <div class="form-group mb-2">
+        <label>Prix</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.prix">
+      </div>
+
+      <!-- Quantité -->
+      <div class="form-group mb-2">
+        <label>Quantité</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.quantiteStock">
+      </div>
+
+      <!-- Description -->
+      <div class="form-group mb-2">
+        <label>Description</label>
+        <textarea class="form-control form-control-sm" rows="2" [(ngModel)]="nouveauProduit.description"></textarea>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="form-group mb-2">
+        <label>Catégorie</label>
+        <select class="form-select" [(ngModel)]="nouveauProduit.idCategorie">
+          <option value="" disabled selected>-- Sélectionnez une catégorie --</option>
+          <option *ngFor="let cat of categories" [value]="cat._id">
+            {{ cat.nom }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Image -->
+      <div class="form-group mb-2">
+        <label>Image</label>
+        <input type="file" class="form-control form-control-sm" (change)="onFileSelected($event)">
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="custom-modal-footer d-flex justify-content-between">
+      <div>
+        <button class="btn-cancel me-2" (click)="closeModal()">Annuler</button>
+        <button class="btn-quit" (click)="closeModal()">Quitter</button>
+      </div>
+      <button class="btn-save" (click)="ajouterProduit()">Ajouter</button>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="custom-modal" *ngIf="showEditModal">
+
+  <div class="custom-modal-content">
+
+    <!-- Header -->
+    <div class="custom-modal-header">
+      <h6>Modifier un Produit</h6>
+      <button class="close-btn" (click)="closeEditModal()">×</button>
+    </div>
+    <!-- Body -->
+    <div class="custom-modal-body">
+      <!-- Nom -->
+      <div class="form-group mb-2">
+        <label>Nom</label>
+        <input type="text" class="form-control form-control-sm" [(ngModel)]="produitEnModification.nom">
+      </div>
+
+      <!-- Prix -->
+      <div class="form-group mb-2">
+        <label>Prix</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="produitEnModification.prix">
+      </div>
+
+      <!-- Quantité -->
+      <div class="form-group mb-2">
+        <label>Quantité</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="produitEnModification.quantiteStock">
+      </div>
+
+      <!-- Description -->
+      <div class="form-group mb-2">
+        <label>Description</label>
+        <textarea class="form-control form-control-sm" rows="2" [(ngModel)]="produitEnModification.description"></textarea>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="form-group mb-2">
+        <label>Catégorie</label>
+        <select class="form-select" [(ngModel)]="produitEnModification.idCategorie._id">
+          <option value="" disabled selected>-- Sélectionnez une catégorie --</option>
+          <option *ngFor="let cat of categories" [value]="cat._id">
+            {{ cat.nom }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Image -->
+      <div class="form-group mb-2">
+        <label>Image</label>
+        <input type="file" class="form-control form-control-sm" (change)="onFileSelected($event)">
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="custom-modal-footer d-flex justify-content-between">
+      <div>
+        <button class="btn-cancel me-2" (click)="closeEditModal()">Annuler</button>
+        <button class="btn-quit" (click)="closeEditModal()">Quitter</button>
+      </div>
+      <button class="btn-save" (click)="modifierProduit()">Modifier</button>
     </div>
 
   </div>

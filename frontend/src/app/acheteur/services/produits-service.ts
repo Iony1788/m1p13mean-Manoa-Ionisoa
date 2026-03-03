@@ -34,8 +34,8 @@ export interface Produit {
 })
 export class ProduitsService {
 
-   private endpoint =  '/produits';
-   private apiUrl = environment.apiUrl+this.endpoint;
+  private endpoint = '/produits';
+  private apiUrl = environment.apiUrl + this.endpoint;
 
 
   constructor(private http: HttpClient) { }
@@ -48,12 +48,31 @@ export class ProduitsService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
- 
+  addProduit(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/addProduit`, formData);
+  }
 
+  addProduitImage(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/addProduitImage`, formData);
+  }
 
+  getAllCategorie(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getAllCategorie`);
+  }
 
-
-  
+  updateProduit(produit: any) {
+    return this.http.post(`${this.apiUrl}/updateProduct`, produit);
+  }
 
 
 }
+
+
+
+
+
+
+
+
+
+

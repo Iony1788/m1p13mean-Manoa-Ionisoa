@@ -22,6 +22,8 @@ export const addCartProduit = async (req, res) => {
         acheteurProfile: id_user,
         produitsSnapshot: [{
           produitId: produit._id,
+          id_boutique: produit.id_boutique
+,
           nom: produit.nom,
           prix: produit.prix,
           image: produit.image || "",
@@ -42,6 +44,7 @@ export const addCartProduit = async (req, res) => {
       } else {
         panier.produitsSnapshot.push({
           produitId: produit._id,
+          id_boutique: produit.id_boutique,
           nom: produit.nom,
           prix: produit.prix,
           image: produit.image || "",

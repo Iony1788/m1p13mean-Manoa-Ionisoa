@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LotService } from '../../admin/services/listeLot-service';
 import { BoutiqueService } from '../services/boutique-service';
 import Swal from 'sweetalert2';
@@ -13,11 +13,12 @@ import { CommonModule } from '@angular/common';
 export class AjoutLocationComponent implements OnInit {
 
   lots: any[] = [];
-  boutiqueId: string | null = null; // <-- ici l'ID de la boutique connectée
+  boutiqueId: string | null = null;
 
   constructor(
     private lotService: LotService,
-     private boutiqueService: BoutiqueService,
+    private boutiqueService: BoutiqueService,
+    private cdr: ChangeDetectorRef   // ✅ ajout ici
   ) {}
 
   ngOnInit(): void {
@@ -25,86 +26,83 @@ export class AjoutLocationComponent implements OnInit {
   }
 
   loadBoutiqueEtLots() {
-  // 1️⃣ Récupérer la boutique connectée
-  this.boutiqueService.getBoutiqueConnectee().subscribe({
-    next: (boutique) => {
-      if (!boutique || !boutique._id) {
-        // ⚠️ juste afficher l'alerte, pas besoin de 'return'
+    this.boutiqueService.getBoutiqueConnectee().subscribe({
+      next: (boutique) => {
+        if (!boutique || !boutique._id) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Impossible de récupérer la boutique connectée'
+          });
+          return;
+        }
+
+        this.boutiqueId = boutique._id;
+        this.loadLots();
+
+        this.cdr.detectChanges(); // ✅ forcer refresh
+      },
+      error: (err) => {
+        console.error('Erreur boutique:', err);
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
           text: 'Impossible de récupérer la boutique connectée'
         });
-        return; // seulement pour sortir du callback, pas pour retourner une valeur
       }
-
-      this.boutiqueId = boutique._id;
-
-      // 2️⃣ Charger les lots libres
-      this.loadLots();
-    },
-    error: (err) => {
-      console.error('Erreur boutique:', err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Impossible de récupérer la boutique connectée'
-      });
-    }
-  });
-}
+    });
+  }
 
   loadLots() {
     this.lotService.getAllLots().subscribe({
       next: (data: any[]) => {
         this.lots = data.filter(lot => lot.statut === 'libre');
+        this.cdr.detectChanges(); // ✅ refresh après update lots
       },
       error: (err) => console.error('Erreur récupération lots:', err)
     });
   }
 
   louer(idLot: string) {
-  if (!this.boutiqueId) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: 'Identifiant boutique non trouvé. Veuillez vous reconnecter.'
+    if (!this.boutiqueId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Identifiant boutique non trouvé. Veuillez vous reconnecter.'
+      });
+      return;
+    }
+
+    return Swal.fire({
+      title: "Confirmer la location ?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Oui, louer",
+      cancelButtonText: "Annuler"
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.lotService.louerLot(idLot, this.boutiqueId!).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Lot loué avec succès',
+            timer: 1500,
+            showConfirmButton: false
+          });
+
+          this.loadLots();
+          this.cdr.detectChanges(); // ✅ forcer update UI
+        },
+        error: (err) => {
+          console.error('Erreur location:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: err.error?.message || 'Erreur serveur'
+          });
+        }
+      });
     });
-    return; // ⚠️ ici, TypeScript veut que tu retournes quelque chose si tu déclares un type de Promise
   }
-
-  // Retourner la Promise de Swal.fire
-  return Swal.fire({
-    title: "Confirmer la location ?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonText: "Oui, louer",
-    cancelButtonText: "Annuler"
-  }).then((result) => {
-    if (!result.isConfirmed) return; // ici on retourne undefined
-
-    console.log('Envoi location ->', { idLot, idBoutique: this.boutiqueId });
-
-    this.lotService.louerLot(idLot, this.boutiqueId!).subscribe({
-      next: (res) => {
-        console.log('Réponse backend:', res);
-        Swal.fire({
-          icon: 'success',
-          title: 'Lot loué avec succès',
-          timer: 1500,
-          showConfirmButton: false
-        });
-        this.loadLots(); // rafraîchir la liste des lots
-      },
-      error: (err) => {
-        console.error('Erreur location:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: err.error?.message || 'Erreur serveur'
-        });
-      }
-    });
-  });
-}
 }

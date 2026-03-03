@@ -8,6 +8,12 @@ const CommandeSchema = new mongoose.Schema({
     required: true
   },
 
+  id_boutique :{
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Boutique',
+    required: true
+  },
+
   panier: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Panier',
@@ -26,6 +32,7 @@ const CommandeSchema = new mongoose.Schema({
 
   produitsSnapshot: [{
     produitId: mongoose.Schema.Types.ObjectId,
+    id_boutique: String,
     nom: String,
     prix: Number,
     image: String,
@@ -33,11 +40,7 @@ const CommandeSchema = new mongoose.Schema({
     subtotal: Number
   }],
 
-  statut: {
-    type: String,
-    enum: ['en_attente', 'payee', 'livree'],
-    default: 'en_attente'
-  },
+  
 
   dateAchat: { 
     type: Date, 

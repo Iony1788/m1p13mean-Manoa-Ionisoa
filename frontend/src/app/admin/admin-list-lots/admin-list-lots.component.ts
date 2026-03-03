@@ -36,7 +36,7 @@ export class AdminListLotComponent implements OnInit {
   constructor(
     private lotService: LotService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadLots();
@@ -84,111 +84,74 @@ export class AdminListLotComponent implements OnInit {
     this.showAddModal = false;
   }
 
- // 🔹 Ajouter lot
-ajouter() {
+  // 🔹 Ajouter lot
+  ajouter() {
 
-  if (!this.nouveauLot.nom_lot) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Champ requis',
-      text: 'Le nom du lot est obligatoire !',
-      confirmButtonColor: '#3085d6'
-    });
-    return;
-  }
-
-  this.lotService.ajouterLot(this.nouveauLot).subscribe({
-    next: (lot) => {
-
-      this.lots.push(lot);
-
-      this.totalPages = Math.ceil(this.lots.length / this.itemsPerPage);
-      this.updateDisplayedLots();
-
-      this.nouveauLot = {
-        nom_lot: '',
-        prix_location: 0
-      };
-
-      this.closeModal();
-
-      // ✅ SweetAlert succès
+    if (!this.nouveauLot.nom_lot) {
       Swal.fire({
-        icon: 'success',
-        title: 'Succès ',
-        text: 'Le lot a été ajouté avec succès !',
-        showConfirmButton: false,
-        timer: 1500
+        icon: 'warning',
+        title: 'Champ requis',
+        text: 'Le nom du lot est obligatoire !',
+        confirmButtonColor: '#3085d6'
       });
-    },
-
-    error: (err) => {
-      console.error(err);
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: "Une erreur s'est produite lors de l'ajout."
-      });
+      return;
     }
-  });
-}
 
-  updateLot() {
+    this.lotService.ajouterLot(this.nouveauLot).subscribe({
+      next: (lot) => {
 
-  this.lotService.modifierLot(this.lotEnModification._id!, this.lotEnModification)
-    .subscribe({
-      next: (updated) => {
+        this.lots.push(lot);
 
-        const index = this.lots.findIndex(l => l._id === updated._id);
-        if (index > -1) {
-          this.lots[index] = updated;
-        }
-
+        this.totalPages = Math.ceil(this.lots.length / this.itemsPerPage);
         this.updateDisplayedLots();
-        this.closeEditModal();
 
+        this.nouveauLot = {
+          nom_lot: '',
+          prix_location: 0
+        };
+
+        this.closeModal();
+
+        // ✅ SweetAlert succès
         Swal.fire({
           icon: 'success',
-          title: 'Modifié !',
-          text: 'Le lot a été modifié avec succès',
-          timer: 1500,
-          showConfirmButton: false
+          title: 'Succès ',
+          text: 'Le lot a été ajouté avec succès !',
+          showConfirmButton: false,
+          timer: 1500
         });
       },
+
       error: (err) => {
         console.error(err);
+
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
-          text: 'Modification échouée'
+          text: "Une erreur s'est produite lors de l'ajout."
         });
       }
     });
-}
+  }
 
- supprimer(lot: Lot) {
-  Swal.fire({
-    title: `Supprimer le lot "${lot.nom_lot}" ?`,
-    text: "Cette action est irréversible !",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Oui, supprimer',
-    cancelButtonText: 'Annuler'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.lotService.supprimerLot(lot._id!).subscribe({
-        next: () => {
-          this.lots = this.lots.filter(l => l._id !== lot._id);
-          this.totalPages = Math.ceil(this.lots.length / this.itemsPerPage);
+  updateLot() {
+
+    this.lotService.modifierLot(this.lotEnModification._id!, this.lotEnModification)
+      .subscribe({
+        next: (updated) => {
+
+          const index = this.lots.findIndex(l => l._id === updated._id);
+          if (index > -1) {
+            this.lots[index] = updated;
+          }
+
           this.updateDisplayedLots();
+          this.closeEditModal();
 
           Swal.fire({
             icon: 'success',
-            title: 'Supprimé !',
-            text: 'Le lot a été supprimé avec succès',
+            title: 'Modifié !',
+            text: 'Le lot a été modifié avec succès',
             timer: 1500,
             showConfirmButton: false
           });
@@ -198,20 +161,57 @@ ajouter() {
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
-            text: "Impossible de supprimer le lot"
+            text: 'Modification échouée'
           });
         }
       });
-    }
-  });
-}
+  }
+
+  supprimer(lot: Lot) {
+    Swal.fire({
+      title: `Supprimer le lot "${lot.nom_lot}" ?`,
+      text: "Cette action est irréversible !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.lotService.supprimerLot(lot._id!).subscribe({
+          next: () => {
+            this.lots = this.lots.filter(l => l._id !== lot._id);
+            this.totalPages = Math.ceil(this.lots.length / this.itemsPerPage);
+            this.updateDisplayedLots();
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Supprimé !',
+              text: 'Le lot a été supprimé avec succès',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: "Impossible de supprimer le lot"
+            });
+          }
+        });
+      }
+    });
+  }
 
   closeEditModal() {
-  this.showEditModal = false;
-}
+    this.showEditModal = false;
+  }
 
-ouvrirModalEdit(lot: Lot) {
-  this.lotEnModification = { ...lot };
-  this.showEditModal = true;
-}
+  ouvrirModalEdit(lot: Lot) {
+    this.lotEnModification = { ...lot };
+    this.showEditModal = true;
+  }
 }

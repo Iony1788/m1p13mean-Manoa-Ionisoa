@@ -13,7 +13,7 @@ import { AuthService } from '../../acheteur/services/auth.service';
 })
 export class LoginAdminComponent {
 
-  email: string = 'admin@example.com';   
+  email: string = 'admin@test.com';   
   password: string = '123456';   
   message: string = '';    
 

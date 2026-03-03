@@ -6,6 +6,11 @@ const produitSnapshotSchema = new mongoose.Schema({
     ref: 'Produit',
     required: true
   },
+  id_boutique: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Boutique',
+    required: true
+  }, 
   nom: {
     type: String,
     required: true

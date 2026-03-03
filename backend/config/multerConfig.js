@@ -7,7 +7,6 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/'); // dossier uploads à la racine du backend
   },
   filename: function (req, file, cb) {
-    // Ex : produit-1632323232.jpg
     cb(null, 'produit-' + Date.now() + path.extname(file.originalname));
   }
 });

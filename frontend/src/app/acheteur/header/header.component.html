@@ -27,8 +27,8 @@
 
     <div class="cart-icon">
       <i class="fas fa-shopping-cart" routerLink="/panier" routerLinkActive="active"></i>
-      <span class="cart-count badge bg-primary">{{ cartTotal }}</span>
+      <span class="cart-count badge bg-primary">{{ (this.total$| async) || 0}}</span>
     </div>
-    
+
   </nav>
 </header>

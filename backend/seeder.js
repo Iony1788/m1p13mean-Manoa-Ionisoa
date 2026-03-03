@@ -9,6 +9,7 @@ const Produit = require('./models/Produit');
 const Boutique = require('./models/Boutique');
 const Lot = require('./models/Lot');
 const Panier = require('./models/Panier');
+const Commande = require('./models/Commande');
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connecté pour le seeding'))
@@ -23,6 +24,7 @@ const seeder = async () => {
     await Panier.deleteMany();
     await Lot.deleteMany();
     await User.deleteMany();
+    await Commande.deleteMany();
 
     // ------------------ Utilisateurs ------------------
     const hashedPassword = await bcrypt.hash('123456', 10);

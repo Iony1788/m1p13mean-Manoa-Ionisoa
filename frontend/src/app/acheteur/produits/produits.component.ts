@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Produit, ProduitsService } from '../services/produits-service';
 import { PanierService } from '../services/panier.service';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environment/environment';
 
 
 @Component({
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./produits.component.css']
 })
 export class ProduitsComponent implements OnInit {
-  private backendUrl = 'https://m1p13mean-manoa-ionisoa.onrender.com';
+  private backendUrl = environment.imageUrl;
   produits: Produit[] = [];
   selectedProduct: Produit | null = null;
   quantity: number = 1;

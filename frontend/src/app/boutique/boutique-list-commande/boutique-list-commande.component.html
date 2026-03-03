@@ -1,3 +1,105 @@
-<p>
-  boutique-list-commande works!
-</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Liste des Produits</h2>
+
+  <div class="card shadow-lg border-0">
+
+    <!-- Header -->
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">Liste commande par boutique</h4>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+
+        <table class="table table-hover table-sm align-middle">
+
+          <thead class="table-success">
+            <tr>
+              <th>Client</th>
+              <th>Total quantite </th>
+              <th>Total Prix</th>
+              <th>Date Achat</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngIf="!loading; else emptyState">
+
+              <tr *ngFor="let commande of commandeList; let i = index">
+                <td>
+                  <span class="badge bg-primary">{{ commande.acheteur.nom +' '+ commande.acheteur.prenom }}</span>
+                </td>
+                <td>
+                  <span class="badge bg-primary">{{ commande.totalQuantite }}</span>
+                </td>
+                <td>
+                  <span class="badge bg-primary">{{ commande.totalPrix | mgaCurrency}}</span>
+                </td>
+                <td>
+                  <span class="badge bg-primary">{{ commande.dateAchat | date}}</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-primary me-2" title="Modifier">
+                    <i class="fas fa-edit fa-sm" (click)="detailDeCommande(commande)"></i>
+                  </button>
+                </td>
+              </tr>
+
+            </ng-container>
+
+            <ng-template #emptyState>
+              <tr>
+                <td colspan="8" class="text-center text-muted py-4">
+                  Aucun commande trouvé
+                </td>
+              </tr>
+            </ng-template>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="modal" [ngStyle]="{'display': showDetailModal ? 'flex' : 'none'}">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+
+    <div class="lot-detail">
+      <h3>Commande details</h3>
+
+      <div>
+        <table class="table table-hover table-sm align-middle">
+          <thead>
+            <th>Produit</th>        
+            <th>Prix Unitaire</th>
+            <th>Quantité</th>
+            <th>SubTotal</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let produit of detailCommande?.produitsSnapshot">
+              <td>{{produit.nom}}</td>
+              <td>{{produit.prix | mgaCurrency}}</td>
+              <td>{{produit.quantite}}</td>
+              <td>{{produit.subtotal | mgaCurrency}}</td>
+            </tr>
+            <tr>
+              <td  class="fw-semibold" colspan="2">Total</td>
+              <td class="fw-semibold">{{detailCommande?.totalQuantite}}</td>
+              <td class="fw-semibold">{{detailCommande?.totalPrix | mgaCurrency}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-secondary mt-2" (click)="closeModal()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

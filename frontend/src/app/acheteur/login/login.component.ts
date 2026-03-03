@@ -13,8 +13,8 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, RouterLink, CommonModule]
 })
 export class LoginComponent {
-  email = 'test@example.com';
-  password = '1234';
+  email = 'acheteur@test.com';
+  password = '123456';
   message = '';
 
   constructor(private authService: AuthService, private router: Router) {}
