@@ -3,7 +3,7 @@
     Mon Panier
     <!-- Bouton Valider et Payer -->
     <button class="btn btn-success" (click)="validerCommande()">
-      <i class="bi bi-credit-card"></i> Valider et Payer
+      <i class="bi bi-credit-card"></i> Valider
     </button>
   </h3>
 
@@ -36,14 +36,14 @@
             <div class="d-flex justify-content-center align-items-center">
               <!-- Bouton moins -->
               <button class="btn btn-sm btn-outline-secondary me-1" (click)="decreaseQuantity(produit)">
-                <i class="bi bi-dash icon-yellow"></i>
+                <i class="fas fa-minus icon-yellow"></i>
               </button>
 
               <span class="mx-2">{{ produit.quantite }}</span>
 
               <!-- Bouton plus -->
               <button class="btn btn-sm btn-outline-secondary ms-1" (click)="increaseQuantity(produit)">
-                <i class="bi bi-plus icon-yellow"></i>
+                <i class="fas fa-plus icon-yellow"></i>
               </button>
             </div>
           </td>
