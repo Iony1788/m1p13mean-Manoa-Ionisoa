@@ -1,0 +1,39 @@
+.table-responsive {
+  overflow-x: auto;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .table thead {
+    display: none; /* cache l'entête sur petit écran */
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    flex-basis: 50%;
+  }
+
+  .text-center {
+    justify-content: flex-end !important;
+  }
+}

@@ -2,9 +2,14 @@
   <nav class="navbar container">
     <a routerLink="/" class="logo">CityMall</a>
 
-    <div class="search-bar">
-      <input type="text" placeholder="Search for products..." />
-      <button type="submit"><i class="fas fa-search"></i></button>
+   <div class="search-bar d-flex mb-3">
+      <input type="text" placeholder="Search for products..."
+            [(ngModel)]="motRecherche"
+            (keyup)="rechercherProduit()" 
+            class="form-control me-2" />
+      <button type="button" (click)="rechercherProduit()" class="btn btn-primary">
+        <i class="fas fa-search"></i>
+      </button>
     </div>
 
     <ul class="nav-links" style="margin-top: 18px;">
@@ -18,9 +23,15 @@
           Shop
         </a>
       </li>
-      <li>
+      <li *ngIf="!authService.isLoggedIn()">
         <button routerLink="/login" routerLinkActive="active" class="nav-btn">
           Login
+        </button>
+      </li>
+
+      <li *ngIf="authService.isLoggedIn()">
+        <button (click)="logout()" class="nav-btn">
+          Logout
         </button>
       </li>
     </ul>

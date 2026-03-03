@@ -215,3 +215,62 @@ exports.updateProduct = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error });
   }
 };
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "ID requis" });
+    }
+
+    const deletedProduit = await Produit.findByIdAndDelete(id);
+
+    if (!deletedProduit) {
+      return res.status(404).json({ message: "Produit non trouvé" });
+    }
+
+    res.json({ message: "Produit supprimé avec succès" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
+
+exports.rechercherProduit = async (req, res) => {
+  try {
+    const { mot } = req.query; // on récupère le mot clé depuis l'URL, exemple: ?mot=rouge
+
+    if (!mot) {
+      return res.status(400).json({
+        success: false,
+        message: "Mot clé requis pour la recherche"
+      });
+    }
+
+    // Recherche dans le nom et la description, uniquement les produits disponibles
+    const produits = await Produit.find({
+      disponible: true,
+      $or: [
+        { nom: { $regex: mot, $options: "i" } },          // recherche insensible à la casse
+        { description: { $regex: mot, $options: "i" } }
+      ]
+    });
+
+    res.status(200).json({
+      success: true,
+      totalProduits: produits.length,
+      produits
+    });
+
+  } catch (error) {
+    console.error("Erreur recherche produits :", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur lors de la recherche des produits",
+      error: error.message
+    });
+  }
+};

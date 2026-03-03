@@ -115,13 +115,6 @@ export class BoutiqueListProduitComponent implements OnInit {
     return this.backendUrl + (image.startsWith('/') ? image : '/' + image);
   }
 
-
-
-
-  supprimerProduit(produit: Produit) {
-    console.log("Supprimer produit :", produit);
-  }
-
   closeModal(): void {
     this.showAddModal = false;
   }
@@ -184,7 +177,6 @@ export class BoutiqueListProduitComponent implements OnInit {
 
   modifierProduit() {
 
-
     const formData = new FormData();
 
     console.log("FRONTEND", this.produitEnModification);
@@ -212,6 +204,44 @@ export class BoutiqueListProduitComponent implements OnInit {
     })
   }
 
+
+
+supprimerProduit(produit: any) {
+  Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Ce produit sera supprimé définitivement !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      this.produitService.deleteProduit(produit._id).subscribe({
+
+        next: () => {
+          this.produits = this.produits.filter(p => p._id !== produit._id);
+          this.cd.detectChanges();
+
+          Swal.fire(
+            'Supprimé !',
+            'Le produit a été supprimé.',
+            'success'
+          );
+        },
+
+        error: (err) => {
+          console.error(err);
+          Swal.fire('Erreur', 'La suppression a échoué', 'error');
+        }
+
+      });
+
+    }
+  });
+}
 
 
 

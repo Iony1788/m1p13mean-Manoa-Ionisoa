@@ -63,6 +63,13 @@ export class ProduitsService {
   updateProduit(produit: any) {
     return this.http.post(`${this.apiUrl}/updateProduct`, produit);
   }
+  deleteProduit(id: string) {
+  return this.http.delete(`${this.apiUrl}/delete/${id}`);
+}
+
+ rechercherProduit(mot: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/recherche?mot=${mot}`);
+  }
 
 
 }

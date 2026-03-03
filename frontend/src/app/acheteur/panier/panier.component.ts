@@ -3,6 +3,7 @@ import { PanierService } from '../services/panier.service';
 import { CommonModule } from '@angular/common';
 import { CommandeService } from '../services/commande.service';
 import { environment } from '../../../environment/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-panier',
@@ -38,8 +39,6 @@ export class PanierComponent implements OnInit {
   increaseQuantity(produit: any) {
     produit.quantite = (produit.quantite || 0) + 1;
     this.calculateTotals();
-    // Ici, tu peux aussi appeler ton backend pour mettre à jour la quantité
-    // this.panierService.updateQuantity(produit.id, produit.quantite).subscribe();
   }
 
   // 🔹 Diminue la quantité d’un produit
@@ -47,8 +46,6 @@ export class PanierComponent implements OnInit {
     if ((produit.quantite || 0) > 1) {
       produit.quantite -= 1;
       this.calculateTotals();
-      // Appel backend si nécessaire
-      // this.panierService.updateQuantity(produit.id, produit.quantite).subscribe();
     }
   }
 
@@ -58,18 +55,53 @@ export class PanierComponent implements OnInit {
     this.totalPrice = this.produits.reduce((sum, p) => sum + ((Number(p.prix) || 0) * (Number(p.quantite) || 0)), 0);
   }
 
-  validerCommande() {
-    this.commandeService.validerCommande().subscribe({
-      next: (res: any) => {
-        this.produits = [];
-        this.panierService.loadPanier();
-        this.cdr.detectChanges();
-        alert("Commande validée avec succès !");
-      },
-      error: (err: any) => {
-        console.error(err);
-        alert("Erreur lors de la validation");
-      }
-    });
-  }
+ validerCommande() {
+
+  Swal.fire({
+    title: 'Confirmer la commande ?',
+    text: "Voulez-vous vraiment valider cette commande ?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, valider',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      this.commandeService.validerCommande().subscribe({
+
+        next: (res: any) => {
+
+          this.produits = [];
+          this.panierService.loadPanier();
+          this.cdr.detectChanges();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Succès ',
+            text: 'Commande validée avec succès !',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        },
+
+        error: (err: any) => {
+          console.error(err);
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Erreur lors de la validation de la commande'
+          });
+        }
+
+      });
+
+    }
+
+  });
+
+}
 }

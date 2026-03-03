@@ -4,7 +4,7 @@
   <div class="card shadow-lg border-0">
 
     <!-- Header -->
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center flex-wrap">
       <h4 class="mb-0">Liste commande par boutique</h4>
     </div>
 
@@ -16,10 +16,10 @@
           <thead class="table-success">
             <tr>
               <th>Client</th>
-              <th>Total quantite </th>
+              <th>Total Quantité</th>
               <th>Total Prix</th>
               <th>Date Achat</th>
-              <th>Detail</th>
+              <th>Détails</th>
             </tr>
           </thead>
 
@@ -28,20 +28,20 @@
 
               <tr *ngFor="let commande of commandeList; let i = index">
                 <td>
-                  <span class="badge bg-primary">{{ commande.acheteur.nom +' '+ commande.acheteur.prenom }}</span>
+                  <span class="badge bg-primary">{{ commande.acheteur.nom + ' ' + commande.acheteur.prenom }}</span>
                 </td>
                 <td>
                   <span class="badge bg-primary">{{ commande.totalQuantite }}</span>
                 </td>
                 <td>
-                  <span class="badge bg-primary">{{ commande.totalPrix | mgaCurrency}}</span>
+                  <span class="badge bg-primary">{{ commande.totalPrix | mgaCurrency }}</span>
                 </td>
                 <td>
-                  <span class="badge bg-primary">{{ commande.dateAchat | date}}</span>
+                  <span class="badge bg-primary">{{ commande.dateAchat | date:'short' }}</span>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-primary me-2" title="Modifier">
-                    <i class="fas fa-edit fa-sm" (click)="detailDeCommande(commande)"></i>
+                  <button class="btn btn-sm btn-primary me-2 mb-1" title="Détails" (click)="detailDeCommande(commande)">
+                    <i class="fas fa-eye fa-sm"></i>
                   </button>
                 </td>
               </tr>
@@ -50,7 +50,7 @@
 
             <ng-template #emptyState>
               <tr>
-                <td colspan="8" class="text-center text-muted py-4">
+                <td colspan="5" class="text-center text-muted py-4">
                   Aucun commande trouvé
                 </td>
               </tr>
@@ -66,40 +66,45 @@
   </div>
 </div>
 
-
+<!-- Modal détail commande -->
 <div class="modal" [ngStyle]="{'display': showDetailModal ? 'flex' : 'none'}">
-  <div class="modal-content">
+  <div class="modal-content p-2">
+
     <span class="close" (click)="closeModal()">&times;</span>
 
     <div class="lot-detail">
-      <h3>Commande details</h3>
+      <h3>Commande détails</h3>
 
-      <div>
+      <div class="table-responsive">
         <table class="table table-hover table-sm align-middle">
-          <thead>
-            <th>Produit</th>        
-            <th>Prix Unitaire</th>
-            <th>Quantité</th>
-            <th>SubTotal</th>
+          <thead class="table-light">
+            <tr>
+              <th>Produit</th>        
+              <th>Prix Unitaire</th>
+              <th>Quantité</th>
+              <th>SubTotal</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let produit of detailCommande?.produitsSnapshot">
-              <td>{{produit.nom}}</td>
-              <td>{{produit.prix | mgaCurrency}}</td>
-              <td>{{produit.quantite}}</td>
-              <td>{{produit.subtotal | mgaCurrency}}</td>
+              <td>{{ produit.nom }}</td>
+              <td>{{ produit.prix | mgaCurrency }}</td>
+              <td>{{ produit.quantite }}</td>
+              <td>{{ produit.subtotal | mgaCurrency }}</td>
             </tr>
-            <tr>
-              <td  class="fw-semibold" colspan="2">Total</td>
-              <td class="fw-semibold">{{detailCommande?.totalQuantite}}</td>
-              <td class="fw-semibold">{{detailCommande?.totalPrix | mgaCurrency}}</td>
+            <tr class="fw-semibold">
+              <td colspan="2">Total</td>
+              <td>{{ detailCommande?.totalQuantite }}</td>
+              <td>{{ detailCommande?.totalPrix | mgaCurrency }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button class="btn btn-secondary mt-2" (click)="closeModal()">
-        Close
-      </button>
+
+      <div class="d-flex justify-content-end mt-2">
+        <button class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+      </div>
     </div>
+
   </div>
 </div>

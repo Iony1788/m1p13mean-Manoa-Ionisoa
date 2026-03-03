@@ -1,11 +1,12 @@
 <div class="container mt-4">
   <h2 class="mb-4">Admin - Liste des Boutiques</h2>
+
   <div class="card shadow-lg border-0">
 
     <!-- Header -->
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center flex-wrap">
       <h4 class="mb-0">Liste des Boutiques</h4>
-      <span class="badge bg-light text-dark">
+      <span class="badge bg-light text-dark mt-2 mt-sm-0">
         {{ boutiques.length }} Boutique(s)
       </span>
     </div>
@@ -13,8 +14,7 @@
     <div class="card-body">
       <div class="table-responsive">
 
-       <table class="table table-hover align-middle table-sm">
-
+        <table class="table table-hover align-middle table-sm table-striped">
           <thead class="table-success">
             <tr>
               <th>#</th>
@@ -26,23 +26,18 @@
           </thead>
 
           <tbody>
-
             <ng-container *ngIf="boutiques.length > 0; else emptyState">
-
               <tr *ngFor="let boutique of boutiques; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td class="fw-semibold">{{ boutique.nom }}</td>
-                <td>{{ boutique.adresse }}</td>
+                <td class="text-truncate" style="max-width:200px;">{{ boutique.adresse }}</td>
                 <td>{{ boutique.telephone }}</td>
-
                 <td class="text-center">
-                  <!-- Désactiver statique -->
                   <button class="btn btn-sm btn-secondary" title="Désactiver">
                     <i class="fas fa-toggle-off"></i> Désactiver
                   </button>
                 </td>
               </tr>
-
             </ng-container>
 
             <ng-template #emptyState>
@@ -54,12 +49,10 @@
             </ng-template>
 
           </tbody>
-
         </table>
 
       </div>
     </div>
 
   </div>
-
 </div>

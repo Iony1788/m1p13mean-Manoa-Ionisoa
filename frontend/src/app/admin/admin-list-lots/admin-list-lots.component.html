@@ -1,25 +1,21 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Admin - Liste des Lots</h2>
-    <!-- Bouton Ajouter déjà présent -->
-  <button class="btn btn-success" (click)="ouvrirModal()">Ajouter</button>
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <h2 class="mb-2 mb-sm-0">Admin - Liste des Lots</h2>
+    <button class="btn btn-success mb-2 mb-sm-0" (click)="ouvrirModal()">Ajouter</button>
   </div>
 
   <div class="card shadow-lg border-0">
 
     <!-- Header -->
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success text-white d-flex flex-wrap justify-content-between align-items-center">
       <h4 class="mb-0">Liste des Lots</h4>
-      <span class="badge bg-light text-dark">
-        {{ lots.length }} Lot(s)
-      </span>
+      <span class="badge bg-light text-dark mt-2 mt-sm-0">{{ lots.length }} Lot(s)</span>
     </div>
-     
+
     <div class="card-body">
       <div class="table-responsive">
 
-        <table class="table table-hover align-middle table-sm">
-
+        <table class="table table-hover align-middle table-sm table-striped">
           <thead class="table-success">
             <tr>
               <th>#</th>
@@ -40,15 +36,14 @@
               <td>{{ lot.superficie || '-' }}</td>
               <td>{{ lot.prix_location || 0 }} Ar</td>
               <td>{{ lot.niveau || '-' }}</td>
-              <td>{{ lot.description || '-' }}</td>
+              <td class="text-truncate" style="max-width:150px;">{{ lot.description || '-' }}</td>
               <td>{{ lot.statut || '-' }}</td>
               <td class="text-center">
-                <button class="btn btn-sm btn-primary me-2" title="Modifier" >
-                  <i class="fas fa-edit fa-sm"  (click)="ouvrirModalEdit(lot)"></i>
+                <button class="btn btn-sm btn-primary me-1 mb-1" title="Modifier" (click)="ouvrirModalEdit(lot)">
+                  <i class="fas fa-edit fa-sm"></i>
                 </button>
-        
-                <button class="btn btn-sm btn-danger" title="Supprimer">
-                  <i class="fas fa-trash-alt fa-sm" (click)="supprimer(lot)"></i>
+                <button class="btn btn-sm btn-danger mb-1" title="Supprimer" (click)="supprimer(lot)">
+                  <i class="fas fa-trash-alt fa-sm"></i>
                 </button>
               </td>
             </tr>
@@ -64,129 +59,49 @@
         </table>
 
         <!-- Pagination -->
-        <div class="d-flex justify-content-between align-items-center mt-2">
-          <button class="btn btn-sm btn-secondary" (click)="prevPage()" [disabled]="currentPage === 1">
-            Précédent
-          </button>
-
-          <span>Page {{ currentPage }} / {{ totalPages }}</span>
-
-          <button class="btn btn-sm btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
-            Suivant
-          </button>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-2">
+          <button class="btn btn-sm btn-secondary mb-1" (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
+          <span class="mb-1">Page {{ currentPage }} / {{ totalPages }}</span>
+          <button class="btn btn-sm btn-secondary mb-1" (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL AJOUT LOT -->
+<!-- MODAL -->
 <div class="modal" [ngStyle]="{'display': showAddModal ? 'flex' : 'none'}">
-  <div class="modal-content">
+  <div class="modal-content modal-responsive">
     <span class="close" (click)="closeModal()">&times;</span>
-
     <div class="lot-detail">
       <h3>Ajouter un Lot</h3>
-
       <div class="mb-2">
         <label>Nom du Lot</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="nouveauLot.nom_lot">
+        <input type="text" class="form-control" [(ngModel)]="nouveauLot.nom_lot">
       </div>
-
       <div class="mb-2">
         <label>Superficie (m²)</label>
-        <input type="number" class="form-control"
-               [(ngModel)]="nouveauLot.superficie">
+        <input type="number" class="form-control" [(ngModel)]="nouveauLot.superficie">
       </div>
-
       <div class="mb-2">
         <label>Prix Location</label>
-        <input type="number" class="form-control"
-               [(ngModel)]="nouveauLot.prix_location">
+        <input type="number" class="form-control" [(ngModel)]="nouveauLot.prix_location">
       </div>
-
       <div class="mb-2">
         <label>Niveau</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="nouveauLot.niveau">
+        <input type="text" class="form-control" [(ngModel)]="nouveauLot.niveau">
       </div>
-
       <div class="mb-2">
         <label>Statut</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="nouveauLot.statut">
+        <input type="text" class="form-control" [(ngModel)]="nouveauLot.statut">
       </div>
-
       <div class="mb-2">
         <label>Description</label>
-        <textarea class="form-control"
-                  [(ngModel)]="nouveauLot.description"></textarea>
+        <textarea class="form-control" [(ngModel)]="nouveauLot.description"></textarea>
       </div>
-
-      <button class="btn btn-success mt-3" (click)="ajouter()">
-        Ajouter
-      </button>
-
-      <button class="btn btn-secondary mt-2" (click)="closeModal()">
-        Annuler
-      </button>
-    </div>
-  </div>
-</div>
-
-
-<!-- MODAL MODIFICATION LOT -->
-<div class="modal" [ngStyle]="{'display': showEditModal ? 'flex' : 'none'}">
-  <div class="modal-content">
-    <span class="close" (click)="closeEditModal()">&times;</span>
-
-    <div class="lot-detail">
-      <h3>Modifier le Lot</h3>
-
-      <div class="mb-2">
-        <label>Nom du Lot</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="lotEnModification.nom_lot">
-      </div>
-
-      <div class="mb-2">
-        <label>Superficie (m²)</label>
-        <input type="number" class="form-control"
-               [(ngModel)]="lotEnModification.superficie">
-      </div>
-
-      <div class="mb-2">
-        <label>Prix Location</label>
-        <input type="number" class="form-control"
-               [(ngModel)]="lotEnModification.prix_location">
-      </div>
-
-      <div class="mb-2">
-        <label>Niveau</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="lotEnModification.niveau">
-      </div>
-
-      <div class="mb-2">
-        <label>Statut</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="lotEnModification.statut">
-      </div>
-
-      <div class="mb-2">
-        <label>Description</label>
-        <textarea class="form-control"
-                  [(ngModel)]="lotEnModification.description"></textarea>
-      </div>
-
-      <button class="btn btn-primary mt-3" (click)="updateLot()">
-        Enregistrer
-      </button>
-
-      <button class="btn btn-secondary mt-2" (click)="closeEditModal()">
-        Annuler
-      </button>
+      <button class="btn btn-success mt-2" (click)="ajouter()">Ajouter</button>
+      <button class="btn btn-secondary mt-2" (click)="closeModal()">Annuler</button>
     </div>
   </div>
 </div>

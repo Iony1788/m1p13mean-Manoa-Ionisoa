@@ -12,39 +12,29 @@ export class AuthService {
   private endpoint = '/auth';
   private apiUrl = environment.apiUrl + this.endpoint;
 
-  // ✅ BehaviorSubject pour rôle réactif
+  // 🔹 Rôle réactif
   private roleSubject = new BehaviorSubject<string>(localStorage.getItem('role') || '');
   role$ = this.roleSubject.asObservable();
 
-  constructor(private http: HttpClient,private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
-  // LOGIN
+  // ✅ LOGIN
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(res => {
-        if (res && res.token) {
+        if (res?.token) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('role', res.role);
-
-          // 🔹 met à jour le BehaviorSubject pour tous les abonnés
           this.roleSubject.next(res.role);
         }
       })
     );
   }
 
-  // Récupère le rôle actuel depuis le localStorage
-  getUserRole(): string {
-    return localStorage.getItem('role') || '';
-  }
-
-  // 🔹 Méthode pour sauvegarder un rôle manuellement
-  saveRole(role: string) {
-    localStorage.setItem('role', role);
-    this.roleSubject.next(role);
-  }
-
-  // REGISTER
+  // ✅ REGISTER
   register(nom: string, prenom: string, email: string, password: string, role: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, {
       nom,
@@ -55,25 +45,34 @@ export class AuthService {
     });
   }
 
-  // SAVE TOKEN
+  // ✅ TOKEN
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  // ✅ ROLE
+  getUserRole(): string {
+    return localStorage.getItem('role') || '';
   }
 
+  saveRole(role: string) {
+    localStorage.setItem('role', role);
+    this.roleSubject.next(role);
+  }
 
-   logout() {
+  // ✅ LOGOUT (VERSION UNIQUE)
+  logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    this.roleSubject.next(''); // mettre à jour le BehaviorSubject pour tous les abonnés
-
-    // Rediriger vers login
+    this.roleSubject.next('');
     this.router.navigate(['/login']);
   }
 
+  // ✅ CHECK LOGIN
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }

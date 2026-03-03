@@ -4,12 +4,12 @@
   <div class="card shadow-lg border-0">
 
     <!-- Header -->
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center flex-wrap">
       <h4 class="mb-0">Produits de la boutique</h4>
-      <span class="badge bg-light text-dark">
+      <span class="badge bg-light text-dark me-2">
         {{ produits.length }} Produit(s)
       </span>
-      <button class="btn btn-sm btn-light text-success ms-3" (click)="openAddModal()" title="Ajouter">
+      <button class="btn btn-sm btn-light text-success ms-1" (click)="openAddModal()" title="Ajouter">
         <i class="bi bi-plus-circle me-1"></i> Ajouter
       </button>
     </div>
@@ -24,7 +24,7 @@
               <th>#</th>
               <th>Image</th>
               <th>Nom</th>
-              <th style="text-align: center;">Prix</th>
+              <th class="text-end">Prix</th>
               <th>Boutique</th>
               <th>Catégorie</th>
               <th>Quantité</th>
@@ -37,27 +37,24 @@
 
               <tr *ngFor="let produit of produits; let i = index">
                 <td>{{ i + 1 }}</td>
-
                 <td class="text-center">
-                  <img *ngIf="produit.image" [src]="getImageUrl(produit.image)" [alt]="produit.nom" width="50"
-                    height="50" class="rounded">
+                  <img *ngIf="produit.image" [src]="getImageUrl(produit.image)" [alt]="produit.nom"
+                       width="50" height="50" class="rounded">
                 </td>
-
                 <td class="fw-semibold">{{ produit.nom }}</td>
-                <td class="text-success fw-bold" style="text-align: right;">{{ produit.prix | mgaCurrency }}</td>
+                <td class="text-success fw-bold text-end">{{ produit.prix | mgaCurrency }}</td>
                 <td>{{ produit.id_boutique?.nom || '-' }}</td>
                 <td>{{ produit.idCategorie?.nom || '-' }}</td>
                 <td>
                   <span class="badge bg-primary">{{ produit.quantiteStock }}</span>
                 </td>
-
                 <td class="text-center">
-                  <button class="btn btn-sm btn-primary me-2" title="Modifier" (click)="openEditModal(produit)">
-                    <i class="fas fa-edit fa-sm" ></i>
+                  <button class="btn btn-sm btn-primary me-2 mb-1" title="Modifier" (click)="openEditModal(produit)">
+                    <i class="fas fa-edit fa-sm"></i>
                   </button>
-                  <button class="btn btn-sm btn-danger" title="Supprimer" (click)="supprimerProduit(produit)">
-                    <i class="fas fa-trash fa-sm" ></i>
-                  </button>                
+                  <button class="btn btn-sm btn-danger mb-1" title="Supprimer" (click)="supprimerProduit(produit)">
+                    <i class="fas fa-trash fa-sm"></i>
+                  </button>
                 </td>
               </tr>
 
@@ -81,138 +78,112 @@
   </div>
 </div>
 
-
 <!-- MODAL AJOUT PRODUIT -->
 <div class="custom-modal" *ngIf="showAddModal">
-
-  <div class="custom-modal-content">
+  <div class="custom-modal-content" style="max-width: 500px; width: 90%; overflow-y: auto; margin: auto;">
 
     <!-- Header -->
-    <div class="custom-modal-header">
+    <div class="custom-modal-header d-flex justify-content-between align-items-center">
       <h6>Ajouter un Produit</h6>
       <button class="close-btn" (click)="closeModal()">×</button>
     </div>
 
     <!-- Body -->
     <div class="custom-modal-body">
-
-      <!-- Nom -->
       <div class="form-group mb-2">
         <label>Nom</label>
         <input type="text" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.nom">
       </div>
 
-      <!-- Prix -->
       <div class="form-group mb-2">
         <label>Prix</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.prix">
       </div>
 
-      <!-- Quantité -->
       <div class="form-group mb-2">
         <label>Quantité</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="nouveauProduit.quantiteStock">
       </div>
 
-      <!-- Description -->
       <div class="form-group mb-2">
         <label>Description</label>
         <textarea class="form-control form-control-sm" rows="2" [(ngModel)]="nouveauProduit.description"></textarea>
       </div>
 
-      <!-- Catégorie -->
       <div class="form-group mb-2">
         <label>Catégorie</label>
-        <select class="form-select" [(ngModel)]="nouveauProduit.idCategorie">
+        <select class="form-select form-select-sm" [(ngModel)]="nouveauProduit.idCategorie">
           <option value="" disabled selected>-- Sélectionnez une catégorie --</option>
-          <option *ngFor="let cat of categories" [value]="cat._id">
-            {{ cat.nom }}
-          </option>
+          <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.nom }}</option>
         </select>
       </div>
 
-      <!-- Image -->
       <div class="form-group mb-2">
         <label>Image</label>
         <input type="file" class="form-control form-control-sm" (change)="onFileSelected($event)">
       </div>
-
     </div>
 
     <!-- Footer -->
-    <div class="custom-modal-footer d-flex justify-content-between">
-      <div>
-        <button class="btn-cancel me-2" (click)="closeModal()">Annuler</button>
-        <button class="btn-quit" (click)="closeModal()">Quitter</button>
+    <div class="custom-modal-footer d-flex justify-content-between flex-wrap mt-2">
+      <div class="mb-2">
+        <button class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
       </div>
-      <button class="btn-save" (click)="ajouterProduit()">Ajouter</button>
+      <button class="btn btn-success mb-2" (click)="ajouterProduit()">Ajouter</button>
     </div>
 
   </div>
 </div>
 
-
+<!-- MODAL MODIFICATION PRODUIT -->
 <div class="custom-modal" *ngIf="showEditModal">
+  <div class="custom-modal-content" style="max-width: 500px; width: 90%; overflow-y: auto; margin: auto;">
 
-  <div class="custom-modal-content">
-
-    <!-- Header -->
-    <div class="custom-modal-header">
+    <div class="custom-modal-header d-flex justify-content-between align-items-center">
       <h6>Modifier un Produit</h6>
       <button class="close-btn" (click)="closeEditModal()">×</button>
     </div>
-    <!-- Body -->
+
     <div class="custom-modal-body">
-      <!-- Nom -->
       <div class="form-group mb-2">
         <label>Nom</label>
         <input type="text" class="form-control form-control-sm" [(ngModel)]="produitEnModification.nom">
       </div>
 
-      <!-- Prix -->
       <div class="form-group mb-2">
         <label>Prix</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="produitEnModification.prix">
       </div>
 
-      <!-- Quantité -->
       <div class="form-group mb-2">
         <label>Quantité</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="produitEnModification.quantiteStock">
       </div>
 
-      <!-- Description -->
       <div class="form-group mb-2">
         <label>Description</label>
         <textarea class="form-control form-control-sm" rows="2" [(ngModel)]="produitEnModification.description"></textarea>
       </div>
 
-      <!-- Catégorie -->
       <div class="form-group mb-2">
         <label>Catégorie</label>
-        <select class="form-select" [(ngModel)]="produitEnModification.idCategorie._id">
+        <select class="form-select form-select-sm" [(ngModel)]="produitEnModification.idCategorie._id">
           <option value="" disabled selected>-- Sélectionnez une catégorie --</option>
-          <option *ngFor="let cat of categories" [value]="cat._id">
-            {{ cat.nom }}
-          </option>
+          <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.nom }}</option>
         </select>
       </div>
 
-      <!-- Image -->
       <div class="form-group mb-2">
         <label>Image</label>
         <input type="file" class="form-control form-control-sm" (change)="onFileSelected($event)">
       </div>
-
     </div>
 
-    <!-- Footer -->
-    <div class="custom-modal-footer d-flex justify-content-between">
-      <div>
-        <button class="btn-cancel me-2" (click)="closeEditModal()">Annuler</button>
-        <button class="btn-quit" (click)="closeEditModal()">Quitter</button>
+    <div class="custom-modal-footer d-flex justify-content-between flex-wrap mt-2">
+      <div class="mb-2">
+        <button class="btn btn-secondary me-2" (click)="closeEditModal()">Annuler</button>
       </div>
-      <button class="btn-save" (click)="modifierProduit()">Modifier</button>
+      <button class="btn btn-primary mb-2" (click)="modifierProduit()">Modifier</button>
     </div>
 
   </div>

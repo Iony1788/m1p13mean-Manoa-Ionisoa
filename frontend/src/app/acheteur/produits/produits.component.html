@@ -22,9 +22,7 @@
   <!-- PRODUITS -->
   <section class="featured-products container">
     <h2>Bestsellers</h2>
-    
-    <!-- Loader -->
-    <i class="fas fa-shopping-bag loader-icon"></i>
+  
 
     <!-- Popup confirmation -->
     <div class="popup" *ngIf="showPopup">{{ popupMessage }}</div>
@@ -33,7 +31,7 @@
       <div *ngFor="let p of produits" class="product-card">
         <img [src]="getImageUrl(p.image)" [alt]="p.nom" class="product-image" />
         <h3>{{ p.nom }}</h3>
-        <p>{{ p.prix | currency:'USD':'symbol' }}</p>
+        <p>{{ p.prix |  mgaCurrency }}</p>
         <p *ngIf="p.id_boutique">Boutique : {{ p.id_boutique.nom }}</p>
 
         <!-- See more -->

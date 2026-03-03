@@ -5,12 +5,13 @@ import { Produit, ProduitsService } from '../services/produits-service';
 import { PanierService } from '../services/panier.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environment/environment';
+import { MgaCurrencyPipe } from '../../pipes/mgaCurrency.pipe';
 
 
 @Component({
   selector: 'app-produits',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MgaCurrencyPipe],
   templateUrl: './produits.component.html',
   styleUrls: ['./produits.component.css']
 })
