@@ -33,6 +33,11 @@
         <p>{{ p.prix | currency:'USD':'symbol' }}</p>
         <p *ngIf="p.id_boutique">Boutique : {{ p.id_boutique.nom }}</p>
 
+        <!-- Note moyenne -->
+        <div class="product-rating" *ngIf="p.noteMoyenne">
+          <span class="stars">{{ getStars(p.noteMoyenne) || 0 }}</span>
+        </div>
+
         <!-- See more -->
         <a class="btn btn-info" (click)="openProductModal(p)">See more</a>
 
@@ -71,6 +76,139 @@
                   (click)="addToCart(selectedProduct, quantity)">
             {{ selectedProduct.disponible ? 'Add to Cart' : 'Out of Stock' }}
           </button>
+
+                    <!-- SECTION AVIS -->
+          <div class="reviews-section">
+            <h3>Avis clients</h3>
+            
+              <!-- Formulaire d'avis (visible seulement si connecté en tant qu'acheteur) -->
+              <div class="review-form" *ngIf="isLoggedIn && isAcheteur && !hadAvis">
+                <h4>Donnez votre avis</h4>
+                <div class="rating-input">
+                  <span>Note :</span>
+                  <div class="stars-input">
+                    <span *ngFor="let star of [1,2,3,4,5]" 
+                          class="star" 
+                          [class.selected]="star <= newReview.note"
+                          (click)="setRating(star)"
+                          (mouseenter)="hoverRating = star"
+                          (mouseleave)="hoverRating = 0"
+                          [style.color]="star <= (hoverRating || newReview.note) ? '#d6a63e' : '#ddd'">
+                      ★
+                    </span>
+                  </div>
+                </div>
+                <textarea 
+                  [(ngModel)]="newReview.commentaire" 
+                  placeholder="Votre commentaire (facultatif)"
+                  rows="3"
+                  class="review-comment"
+                  [disabled]="isSubmittingAvis"></textarea>
+                <button class="btn btn-secondary" 
+                        (click)="submitReview(selectedProduct._id)"
+                        [disabled]="!newReview.note || isSubmittingAvis">
+                  <span *ngIf="!isSubmittingAvis">Publier l'avis</span>
+                  <span *ngIf="isSubmittingAvis">Publication en cours...</span>
+                </button>
+              </div>
+
+              <!-- Message pour les utilisateurs non connectés -->
+              <div class="login-message" *ngIf="!isLoggedIn">
+                <p><a routerLink="/login">Connectez-vous</a> pour donner votre avis</p>
+              </div>
+
+              <!-- Message pour les utilisateurs connectés mais non acheteurs -->
+              <div class="login-message" *ngIf="isLoggedIn && !isAcheteur">
+                <p>Seuls les acheteurs peuvent donner des avis</p>
+              </div>
+
+            <!-- Barre de tri -->
+            <div class="sort-bar" *ngIf="avisStats.totalAvis > 0">
+              <label for="sort">Trier par :</label>
+              <select id="sort" (change)="onSortChange($event)">
+                <option *ngFor="let option of sortOptions" 
+                        [value]="option.value" 
+                        [selected]="option.value === currentSort">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Indicateur de chargement -->
+            <div class="loading-spinner" *ngIf="isLoadingAvis">
+              <div class="spinner"></div>
+              <p>Chargement des avis...</p>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div class="error-message" *ngIf="avisError">
+              {{ avisError }}
+            </div>
+
+            <!-- Liste des avis -->
+            <div class="reviews-list" *ngIf="!isLoadingAvis && !avisError">
+              <div class="no-reviews" *ngIf="productAvis.length === 0">
+                <p>Aucun avis pour ce produit pour le moment.</p>
+                <p>Soyez le premier à donner votre avis !</p>
+              </div>
+
+              <div *ngFor="let avis of productAvis" class="review-item">
+                <div class="review-header">
+                  <div class="user-info">
+                    <div class="avatar" [ngStyle]="{'background-image': avis.acheteurProfile.avatar ? 'url(' + avis.acheteurProfile.avatar + ')' : 'none'}">
+                      <span *ngIf="!avis.acheteurProfile.avatar">
+                        {{ avis.acheteurProfile.nom | slice:0:1 }}
+                      </span>
+                    </div>
+                    <div>
+                      <span class="review-author">{{ avis.acheteurProfile.nom }}</span>
+                      <span class="review-date">{{ formatDate(avis.createdAt) }}</span>
+                    </div>
+                  </div>
+                  <div class="review-rating">
+                    <span class="stars">{{ getStars(avis.note) }}</span>
+                    <span class="note-value">{{ avis.note }}/5</span>
+                  </div>
+                </div>
+                <p class="review-comment" *ngIf="avis.commentaire">{{ avis.commentaire }}</p>
+                <p class="review-no-comment" *ngIf="!avis.commentaire"><em>Aucun commentaire</em></p>
+              </div>
+
+              <!-- Pagination -->
+              <div class="pagination" *ngIf="avisPagination.totalPages > 1">
+                <button 
+                  class="page-btn" 
+                  [disabled]="avisPagination.currentPage === 1"
+                  (click)="onPageChange(avisPagination.currentPage - 1)">
+                  ← Précédent
+                </button>
+                
+                <div class="page-numbers">
+                  <button 
+                    *ngFor="let page of getPagesArray()" 
+                    class="page-number" 
+                    [class.active]="page === avisPagination.currentPage"
+                    (click)="onPageChange(page)">
+                    {{ page }}
+                  </button>
+                </div>
+                
+                <button 
+                  class="page-btn" 
+                  [disabled]="avisPagination.currentPage === avisPagination.totalPages"
+                  (click)="onPageChange(avisPagination.currentPage + 1)">
+                  Suivant →
+                </button>
+              </div>
+
+              <!-- Informations de pagination -->
+              <div class="pagination-info" *ngIf="avisPagination.totalItems > 0">
+                Affichage {{ (avisPagination.currentPage - 1) * avisPagination.itemsPerPage + 1 }} 
+                - {{ Math.min(avisPagination.currentPage * avisPagination.itemsPerPage, avisPagination.totalItems) }} 
+                sur {{ avisPagination.totalItems }} avis
+              </div>
+            </div>
+          </div>
 
           <!-- Retour -->
           <button class="btn btn-secondary" style="margin-top: 10px;" (click)="closeModal()">Retour</button>

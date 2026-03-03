@@ -128,3 +128,66 @@ exports.addProduitImage = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err });
   }
 };
+
+// Récupérer tous les produits triés par note moyenne (du plus élevé au plus bas)
+exports.getProduitsTriesParNote = async (req, res) => {
+  try {
+    console.log("Récupération des produits triés par note moyenne...");
+
+    // Récupérer tous les produits avec leurs informations de base
+    const produits = await Produit.find()
+      .populate('id_boutique', 'nom adresse')
+      .populate('idCategorie', 'nom description');
+    
+    if (!produits || produits.length === 0) {
+      return res.status(404).json({ 
+        success: false,
+        message: "Aucun produit trouvé" 
+      });
+    }
+
+    // Pour chaque produit, calculer sa note moyenne à partir des avis
+    const produitsAvecNotes = await Promise.all(
+      produits.map(async (produit) => {
+        // Importer le modèle Avis (à faire en haut du fichier)
+        const Avis = require('../models/Avis');
+        
+        // Calculer la note moyenne du produit
+        const productRating = await Avis.calculateProductAverageRating(produit._id);
+        
+        // Convertir le produit en objet pour pouvoir ajouter des propriétés
+        const produitObj = produit.toObject();
+        
+        // Ajouter les informations de note
+        produitObj.noteMoyenne = productRating.averageNote;
+        produitObj.nombreAvis = productRating.totalAvis;
+        
+        return produitObj;
+      })
+    );
+
+    // Trier les produits par note moyenne décroissante
+    // Les produits sans note (noteMoyenne = 0) seront placés à la fin
+    const produitsTries = produitsAvecNotes.sort((a, b) => {
+      // Priorité aux produits avec des notes
+      if (a.noteMoyenne === 0 && b.noteMoyenne > 0) return 1;
+      if (b.noteMoyenne === 0 && a.noteMoyenne > 0) return -1;
+      // Sinon tri par note décroissante
+      return b.noteMoyenne - a.noteMoyenne;
+    });
+
+    res.status(200).json({
+      success: true,
+      count: produitsTries.length,
+      data: produitsTries
+    });
+
+  } catch (error) {
+    console.error("Erreur lors du tri des produits par note:", error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur lors de la récupération des produits triés',
+      error: error.message
+    });
+  }
+};

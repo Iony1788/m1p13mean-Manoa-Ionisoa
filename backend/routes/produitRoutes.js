@@ -8,7 +8,7 @@ const { addProduitImage } = require('../controllers/produitController');
 // Routes publiques
 router.get('/categorie/:idCategorie', produitController.getListProduitWhitCategorie);
 router.get('/listProduitBoutique/:idBoutique', produitController.getListProduitWhitBoutique);
-router.get('/', produitController.getAllProduits);
+router.get('/', produitController.getProduitsTriesParNote);
 router.get('/:id', produitController.detailProduit);
 
 // Routes protégées

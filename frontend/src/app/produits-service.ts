@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators'; //
 
 export interface Boutique {
   _id: string;
@@ -25,7 +26,24 @@ export interface Produit {
   id_boutique?: Boutique;
   idCategorie?: Categorie;
 
-  quantity?: number;
+  noteMoyenne?: number;
+  nombreAvis?: Avis[];
+
+}
+
+export interface Avis {
+  _id?: string;
+  userId: string;
+  userName?: string;
+  note: number; // 1-5
+  commentaire?: string;
+  date: Date;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  count: number;
+  data: T;
 }
 
 @Injectable({
@@ -40,7 +58,11 @@ export class ProduitsService {
   constructor(private http: HttpClient) { }
 
   getProduits(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(this.apiUrl);
+    // return this.http.get<Produit[]>(this.apiUrl);
+    return this.http.get<any>(this.apiUrl).pipe(
+      map(response => response.data)
+    );
+
   }
 
   getProduitById(id: string) {
@@ -50,9 +72,6 @@ export class ProduitsService {
  
 
 
-
-
-  
 
 
 }
