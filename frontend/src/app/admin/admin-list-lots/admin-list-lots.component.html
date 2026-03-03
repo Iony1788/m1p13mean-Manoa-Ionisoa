@@ -105,3 +105,40 @@
     </div>
   </div>
 </div>
+
+
+<!-- MODAL EDIT -->
+<div class="modal" [ngStyle]="{'display': showEditModal ? 'flex' : 'none'}">
+  <div class="modal-content modal-responsive">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+    <div class="lot-detail">
+      <h3>Modifier le Lot</h3>
+      <div class="mb-2">
+        <label>Nom du Lot</label>
+        <input type="text" class="form-control" [(ngModel)]="lotEnModification.nom_lot">
+      </div>
+      <div class="mb-2">
+        <label>Superficie (m²)</label>
+        <input type="number" class="form-control" [(ngModel)]="lotEnModification.superficie">
+      </div>
+      <div class="mb-2">
+        <label>Prix Location</label>
+        <input type="number" class="form-control" [(ngModel)]="lotEnModification.prix_location">
+      </div>
+      <div class="mb-2">
+        <label>Niveau</label>
+        <input type="text" class="form-control" [(ngModel)]="lotEnModification.niveau">
+      </div>
+      <div class="mb-2">
+        <label>Statut</label>
+        <input type="text" class="form-control" [(ngModel)]="lotEnModification.statut">
+      </div>
+      <div class="mb-2">
+        <label>Description</label>
+        <textarea class="form-control" [(ngModel)]="lotEnModification.description"></textarea>
+      </div>
+      <button class="btn btn-primary mt-2" (click)="updateLot()">Enregistrer</button>
+      <button class="btn btn-secondary mt-2" (click)="closeEditModal()">Annuler</button>
+    </div>
+  </div>
+</div>
